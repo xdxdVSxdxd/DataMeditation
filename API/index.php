@@ -19,7 +19,7 @@ function utf8ize($d) {
 }
 
 
-function doLogin($request){
+function doLogin($request,$conn){
 	$result = new \stdClass();
 
 	$q = "SELECT id,pwd FROM users WHERE login=:login LIMIT 0,1";
@@ -38,61 +38,61 @@ function doLogin($request){
 	return $result;	
 }
 
-function doRegister($request){
+function doRegister($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doSigninToGroup($request){
+function doSigninToGroup($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doStoreData($request){
+function doStoreData($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doListUsersInGroups($request){
+function doListUsersInGroups($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doJoinRitual($request){
+function doJoinRitual($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doGetMyCouple($request){
+function doGetMyCouple($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doGetMyCoupleDataForRitual($request){
+function doGetMyCoupleDataForRitual($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doEndRitualStatus($request){
+function doEndRitualStatus($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doCreateCouples($request){
+function doCreateCouples($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
 }
 
-function doRemoveCouples($request){
+function doRemoveCouples($request,$conn){
 	$result = new \stdClass();
 
 	return $result;	
@@ -104,27 +104,27 @@ $cmd = $_REQUEST["cmd"];
 $result = new \stdClass();
 
 if($cmd=="login"){
-	$result = doLogin($_REQUEST);
+	$result = doLogin($_REQUEST,$conn);
 } else if($cmd=="register"){
-	$result = doRegister($_REQUEST);
+	$result = doRegister($_REQUEST,$conn);
 } else if($cmd=="togroup"){
-	$result = doSigninToGroup($_REQUEST);
+	$result = doSigninToGroup($_REQUEST,$conn);
 } else if($cmd=="updata"){
-	$result = doStoreData($_REQUEST);
+	$result = doStoreData($_REQUEST,$conn);
 } else if($cmd=="listgroup"){
-	$result = doListUsersInGroups($_REQUEST);
+	$result = doListUsersInGroups($_REQUEST,$conn);
 } else if($cmd=="joinritual"){
-	$result = doJoinRitual($_REQUEST);
+	$result = doJoinRitual($_REQUEST,$conn);
 } else if($cmd=="getmycouple"){
-	$result = doGetMyCouple($_REQUEST);
+	$result = doGetMyCouple($_REQUEST,$conn);
 } else if($cmd=="getmycoupledataforritual"){
-	$result = doGetMyCoupleDataForRitual($_REQUEST);
+	$result = doGetMyCoupleDataForRitual($_REQUEST,$conn);
 } else if($cmd=="endritualstatus"){
-	$result = doEndRitualStatus($_REQUEST);
+	$result = doEndRitualStatus($_REQUEST,$conn);
 } else if($cmd=="createcouples"){
-	$result = doCreateCouples($_REQUEST);
+	$result = doCreateCouples($_REQUEST,$conn);
 } else if($cmd=="removecouples"){
-	$result = doRemoveCouples($_REQUEST);
+	$result = doRemoveCouples($_REQUEST,$conn);
 } else {
 	$result->err = "Error. Command not understood.";
 }
