@@ -21,6 +21,19 @@ function utf8ize($d) {
 function doLogin($request){
 	$result = new \stdClass();
 
+	$q = "SELECT id,pwd FROM users WHERE login=:login LIMIT 0,1";
+	$stmt = $pdo->prepare($q);
+	$stmt->execute([':login' => $request["login"] ]);
+	$user = $stmt->fetch();
+
+	if ($user && password_verify($request["password"], $user['pwd']))
+	{
+	    $result->login = $request["login"];
+	    $result->iduser = $user['id'];
+	} else {
+	    $result->error = "Unknown user. Register?";
+	}
+
 	return $result;	
 }
 

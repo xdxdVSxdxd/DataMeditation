@@ -132,6 +132,13 @@ function doLogin(){
 	login = $("#login").val().trim().toUpperCase();
 	password = $("#password").val().trim().toUpperCase();
 	groupid = $("#groupid").val().trim().toUpperCase();
+
+	$.getJSON(
+		APIBaseUrl + "?cmd=login&login=" + login + "&password=" + password + "&groupid=" + groupid,
+		function(data){
+			console.log(data);
+		}
+	);
 }
 
 
