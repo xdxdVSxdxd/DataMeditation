@@ -66,16 +66,16 @@ function doRegister($request,$conn){
 function doSigninToGroup($request,$conn){
 	$result = new \stdClass();
 
-	$q = "SELECT id FROM groups WHERE group=:group LIMIT 0,1";
+	$q = "SELECT id FROM groups WHERE groupname=:groupname LIMIT 0,1";
 	$stmt = $conn->prepare($q);
-	$stmt->execute([':group' => $request["groupid"] ]);
+	$stmt->execute([':groupname' => $request["groupid"] ]);
 	$group = $stmt->fetch();
 
 	if(!$group || $group==NULL){
 		//insert group and produce data
-		$q = "INSERT INTO groups(group) VALUES( :group )";
+		$q = "INSERT INTO groups(groupname) VALUES( :groupname )";
 		$stmt = $conn->prepare($q);
-		$stmt->execute([':group' => $request["groupid"] ]);
+		$stmt->execute([':groupname' => $request["groupid"] ]);
 
 		$result->group = $request["groupid"];
 	    $result->groupid = $conn->lastInsertId();

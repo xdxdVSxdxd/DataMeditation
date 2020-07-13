@@ -61,9 +61,9 @@ CREATE TABLE IF NOT EXISTS `couples` (
 
 CREATE TABLE IF NOT EXISTS `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `groupname` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `group` (`group`)
+  KEY `groupname` (`groupname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
