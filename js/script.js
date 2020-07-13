@@ -9,6 +9,8 @@ var isritualtime = false;
 var isassemblytime = false;
 var iscouplesmeettime = false;
 
+var user = null;
+
 
 $(document).ready(function () {
 
@@ -133,10 +135,33 @@ function doLogin(){
 	password = $("#password").val().trim().toUpperCase();
 	groupid = $("#groupid").val().trim().toUpperCase();
 
+	user = null;
+
 	$.getJSON(
 		APIBaseUrl + "?cmd=login&login=" + login + "&password=" + password + "&groupid=" + groupid,
 		function(data){
 			console.log(data);
+			if(data.error){
+				if(confirm(data.error)){
+					$.getJSON(
+						APIBaseUrl + "?cmd=register&login=" + login + "&password=" + password + "&groupid=" + groupid,
+						function(data){
+							if(data.error){
+								alert(data.error);
+							} else {
+								user = data;
+							}
+						}
+					);
+				}
+			}  else {
+				user = data;
+			}
+
+			if(user!=null){
+				// sign in to group
+				// if success: show menu
+			}
 		}
 	);
 }

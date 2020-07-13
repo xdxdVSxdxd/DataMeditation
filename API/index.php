@@ -41,6 +41,25 @@ function doLogin($request,$conn){
 function doRegister($request,$conn){
 	$result = new \stdClass();
 
+	// if user does not esist
+	$q = "SELECT id FROM users WHERE login=:login LIMIT 0,1";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([':login' => $request["login"] ]);
+	$user = $stmt->fetch();
+
+	// register
+	if(!$user || $user==NULL){
+		$q = "INSERT INTO users(login,pwd) VALUES( :login , :pwd )";
+		$stmt = $conn->prepare($q);
+		$stmt->execute([':login' => $request["login"]  ,   ':pwd' => password_hash($request["password"],PASSWORD_DEFAULT)    ]);
+
+		$result->login = $request["login"];
+	    $result->iduser = $conn->lastInsertId();
+
+	} else {
+		$result->error = "User already exists.";
+	}
+
 	return $result;	
 }
 
