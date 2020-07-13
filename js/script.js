@@ -160,7 +160,14 @@ function doLogin(){
 
 			if(user!=null){
 				// sign in to group
-				// if success: show menu
+				$.getJSON(
+					APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + groupid,
+					function(data){
+						console.log(data);
+
+						// if success: show menu
+					}
+				);
 			}
 		}
 	);

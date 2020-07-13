@@ -66,6 +66,57 @@ function doRegister($request,$conn){
 function doSigninToGroup($request,$conn){
 	$result = new \stdClass();
 
+	$q = "SELECT id FROM groups WHERE group=:group LIMIT 0,1";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([':group' => $request["groupid"] ]);
+	$group = $stmt->fetch();
+
+	if(!$group || $group==NULL){
+		//insert group and produce data
+		$q = "INSERT INTO groups(group) VALUES( :group )";
+		$stmt = $conn->prepare($q);
+		$stmt->execute([':group' => $request["groupid"] ]);
+
+		$result->group = $request["groupid"];
+	    $result->groupid = $conn->lastInsertId();
+	} else {
+		$result->group = $request["groupid"];
+	    $result->groupid = $group["id"];
+	}
+
+	//find if there is a previous registration of the user in the gorup
+	$q = "SELECT lastlogin FROM users_groups WHERE userid=:userid AND groupid=:groupid LIMIT 0,1";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
+	$signin = $stmt->fetch();
+
+	if($signin || $signin!=NULL){
+		// if there is --> update it
+		$q = "UPDATE users_groups SET lastlogin=NOW() WHERE userid=:userid AND groupid=:groupid";
+		$stmt = $conn->prepare($q);
+		$stmt->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
+
+	} else {
+		// if there is not --> insert it
+		$q = "INSERT INTO users_groups(userid,groupid,lastlogin) VALUES(:userid,:groupid, NOW() )";
+		$stmt = $conn->prepare($q);
+		$stmt->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
+
+
+	}
+	// insert group, groupid and timestamp in result
+
+	$q = "SELECT lastlogin FROM users_groups WHERE userid=:userid AND groupid=:groupid LIMIT 0,1";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
+	$signin = $stmt->fetch();
+
+	if($signin || $signin!=NULL){
+		$result->lastlogin = $signin["lastlogin"];
+	} else {
+		$result->error = "Could not signin to group";
+	}
+
 	return $result;	
 }
 
