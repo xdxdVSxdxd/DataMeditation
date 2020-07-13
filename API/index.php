@@ -23,7 +23,7 @@ function doLogin($request){
 	$result = new \stdClass();
 
 	$q = "SELECT id,pwd FROM users WHERE login=:login LIMIT 0,1";
-	$stmt = $pdo->prepare($q);
+	$stmt = $conn->prepare($q);
 	$stmt->execute([':login' => $request["login"] ]);
 	$user = $stmt->fetch();
 
