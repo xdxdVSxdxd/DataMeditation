@@ -10,6 +10,7 @@ var isassemblytime = false;
 var iscouplesmeettime = false;
 
 var user = null;
+var group = null;
 
 
 $(document).ready(function () {
@@ -17,6 +18,7 @@ $(document).ready(function () {
 	$.getJSON("data/ritual.json?v=" + Math.random()*Math.random() ,function(data){
 
 		ritualdata = data;
+		setupmenuitems();
 		start();
 	});
 	
@@ -75,33 +77,35 @@ function refreshInterface(){
 
 
 	// do server side tasks depending on current time / date and status variables
+	// TODO
 	
 	// update interfaces
 	if(isritualtime){
 		console.log("[ritual on]");
-		$("#ritualwaitroompanel").css("display","block");
+		$("#gotoritualwaitroom").css("display","block");
 	} else {
 		console.log("[ritual off]");
-		$("#ritualwaitroompanel").css("display","none");
+		$("#gotoritualwaitroom").css("display","none");
 	}
 
 	if(isassemblytime){
 		console.log("[assembly on]");
-		$("#assemblypanel").css("display","block");
+		$("#gotoassembly").css("display","block");
 	} else {
 		console.log("[assembly off]");
-		$("#assemblypanel").css("display","none");
+		$("#gotoassembly").css("display","none");
 	}
 
 	if(iscouplesmeettime){
 		console.log("[couples on]");
-		$("#couplespanel").css("display","block");
+		$("#gotocouples").css("display","block");
 	} else {
 		console.log("[couples off]");
-		$("#couplespanel").css("display","none");
+		$("#gotocouples").css("display","none");
 	}
 	
 	// turn on notifications
+	// TODO
 }
 
 function start(){
@@ -128,6 +132,16 @@ function toLogin(){
 			//
 		});	
 	});
+}
+
+function fromLogintoMenu(){
+	$(".panel").fadeOut(function(){
+		$(".panel").css("display","none");
+		$("#menupanel").css("display","block");
+		$("#menupanel").fadeIn(function(){
+			//
+		});	
+	});	
 }
 
 function doLogin(){
@@ -165,7 +179,14 @@ function doLogin(){
 					function(data){
 						console.log(data);
 
-						// if success: show menu
+						if(data.error){
+							alert(data.error);
+						} else {
+							// if success: show menu
+							group = data;	
+							fromLogintoMenu();
+						}
+						
 					}
 				);
 			}
@@ -232,4 +253,13 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 
 	valid = startDate < currentDate && endDate > currentDate
 	return valid;
+}
+
+
+function setupmenuitems(){
+	$("#gotologin").click(function(){
+		user = null;
+		group = null;
+		toLogin();
+	});
 }
