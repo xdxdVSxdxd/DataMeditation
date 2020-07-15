@@ -19,6 +19,7 @@ $(document).ready(function () {
 
 		ritualdata = data;
 		setupmenuitems();
+		setupdatacollectionform();
 		start();
 	});
 	
@@ -78,6 +79,30 @@ function refreshInterface(){
 
 	// do server side tasks depending on current time / date and status variables
 	// TODO
+
+
+	if(user!=null && group!=null ){
+		console.log("[checkin to group]");
+		// sign in to group
+		$.getJSON(
+			APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + group.group,
+			function(data){
+				console.log(data);
+
+				if(data.error){
+					alert(data.error);
+					user = null;
+					group = null;
+					toLogin();
+				} else {
+					group = data;	
+				}
+				
+			}
+		);
+	}
+
+
 	
 	// update interfaces
 	if(isritualtime){
@@ -132,6 +157,27 @@ function toLogin(){
 			//
 		});	
 	});
+}
+
+
+function toMenu(){
+	$(".panel").fadeOut(function(){
+		$(".panel").css("display","none");
+		$("#menupanel").css("display","block");
+		$("#menupanel").fadeIn(function(){
+			//
+		});	
+	});
+}
+
+function toDataCollection(){
+	$(".panel").fadeOut(function(){
+		$(".panel").css("display","none");
+		$("#datacollectionpanel").css("display","block");
+		$("#datacollectionpanel").fadeIn(function(){
+			//
+		});	
+	});	
 }
 
 function fromLogintoMenu(){
@@ -262,4 +308,77 @@ function setupmenuitems(){
 		group = null;
 		toLogin();
 	});
+
+	$("#toMenu").click(function(){
+		toMenu();
+	});
+
+	$("#gotodata").click(function(){
+		toDataCollection();
+	});
+}
+
+
+function setupdatacollectionform(){
+	var formcontainer = d3.select("#datacollectionpanel").append("div").attr("class","datacollectionform");
+	if(typeof ritualdata.datatocollect != 'undefined'){
+		for(var i = 0; i<ritualdata.datatocollect.length; i++){
+			// add field
+			var fieldcontainer = formcontainer.append("div").attr("class","fieldcontainer");
+			fieldcontainer.append("div").attr("class","fieldlables").text(ritualdata.datatocollect[i].label);
+			if( ritualdata.datatocollect[i].type=="switch" ){
+				
+				var fh = fieldcontainer
+						.append("div")
+						.attr("class","fieldholder");
+
+				for(var j=0; j<ritualdata.datatocollect[i].positions.length; j++){
+					fh	
+						.append("input")
+						.attr("type","radio")
+						.attr("name",ritualdata.datatocollect[i].fieldid)	
+						.attr("id",ritualdata.datatocollect[i].fieldid + j)
+						.attr("value",ritualdata.datatocollect[i].positions[j]);
+
+					fh
+						.append("label")
+						.attr("for", ritualdata.datatocollect[i].fieldid + j)
+						.text(ritualdata.datatocollect[i].positions[j]);
+				}
+				
+
+			} else if( ritualdata.datatocollect[i].type=="select" ){
+				
+
+				var fh = fieldcontainer
+						.append("div")
+						.attr("class","fieldholder")
+						.append("select")
+						.attr("name",ritualdata.datatocollect[i].fieldid)
+						.attr("id",ritualdata.datatocollect[i].fieldid);
+
+				for(var j=0; j<ritualdata.datatocollect[i].options.length; j++){
+					fh	
+						.append("option")
+						.attr("value",ritualdata.datatocollect[i].options[j])
+						.text(ritualdata.datatocollect[i].options[j]);
+				}
+				
+
+			} else if( ritualdata.datatocollect[i].type=="range" ){
+
+				// todo
+				
+			} else if( ritualdata.datatocollect[i].type=="text" ){
+
+				var fh = fieldcontainer
+						.append("div")
+						.attr("class","fieldholder")
+						.append("input")
+						.attr("type","text")
+						.attr("name",ritualdata.datatocollect[i].fieldid)
+						.attr("id",ritualdata.datatocollect[i].fieldid);
+			}
+		}
+	}
 }

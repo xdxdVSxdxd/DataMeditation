@@ -8,18 +8,18 @@ body,html{
 	margin: 0px;
 	padding: 0px;
 	font: 18px 'Helvetica Neue',sans-serif;
-	background: #FFFFFF;
-	color: #000000;
+	background: #000000;
+	color: #FFFFFF;
 }
 
 .panel{
 	background: #000000;
 	color: #FFFFFF;
 	position: fixed;
-	top: 0px;
+	top: 60px;
 	left: 0px;
 	width:100%;
-	height:100%;
+	height: calc(100% - 60px);
 	margin: 0px;
 	padding: 0px;
 }
@@ -55,6 +55,43 @@ body,html{
 
 #notification{
 	z-index: 850;
+}
+
+#toMenu{
+	position: fixed;
+	top: 5px;
+	right: 5px;
+	z-index: 850;
+	width: 50px;
+	height: 50px;
+	background: url(../images/hamburgher.png);
+}
+
+.menuitem{
+	margin: 10px;
+	padding: 20px;
+	text-align: center;
+	line-height: 30px;
+	width: calc(100% - 60px);
+	background: #FF0000;
+	color: #FFFFFF;
+	animation: hton 1s;
+}
+
+.menuitem:hover{
+	background: #FFFF00;
+	color: #000000;
+	animation: ntoh 1s;
+}
+
+@keyframes hton {
+  from {background-color: #FFFF00; color: #000000;}
+  to {background-color: #FF0000; color: #FFFFFF;}
+}
+
+@keyframes ntoh {
+  from {background-color: #FF0000; color: #FFFFFF;}
+  to {background-color: #FFFF00; color: #000000;}
 }
 
 @media all and (max-width: 800px) {
