@@ -211,14 +211,12 @@ function doCreateCouples($request,$conn){
 function doRemoveCouples($request,$conn){
 	$result = new \stdClass();
 
-	echo($request["groupid"]);
-
 	$q = "DELETE FROM couples WHERE groupid = :groupid";
 	$stmt = $conn->prepare($q);
 	$stmt->execute([  ':groupid' => $request["groupid"] ] );
 
 	$msg = "Couples deleted for group " . $request["groupid"];
-	$restult->message = $msg;
+	$result->message = $msg;
 
 	return $result;	
 }
