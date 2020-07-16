@@ -2,10 +2,13 @@
 	
 $conn;
 
-$DB_NAME = "DataMeditation";
-$DB_HOST = "localhost";
-$DB_USER = "dmetidusoo8ei.";
-$DB_PWD = "uyids7e93j(6&uuU.;";
+
+$conffile = parse_ini_file("dm.config");
+
+$DB_NAME = $conffile["DB_NAME"];
+$DB_HOST = $conffile["DB_HOST"];
+$DB_USER = $conffile["DB_USER"];
+$DB_PWD = $conffile["DB_PWD"];
 
 try {
     $conn = new PDO("mysql:host=" . $DB_HOST . ";dbname=" . $DB_NAME , $DB_USER, $DB_PWD);

@@ -67,6 +67,10 @@ body,html{
 	background: url(../images/hamburgher.png);
 }
 
+.panel a{
+	text-decoration: none;
+}
+
 .menuitem{
 	margin: 10px;
 	padding: 20px;

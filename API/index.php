@@ -125,7 +125,7 @@ function doStoreData($request,$conn){
 
 	$q = "INSERT INTO jsondata(userid,groupid,timestamp,jsonstring) VALUES(:userid,:groupid, NOW(), :data )";
 	$stmt = $conn->prepare($q);
-	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] ], ":data" => $request["jsondata"] );
+	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] , ":data" => $request["jsondata"] ] );
 
 	return $result;	
 }
@@ -162,6 +162,8 @@ function doEndRitualStatus($request,$conn){
 
 function doCreateCouples($request,$conn){
 	$result = new \stdClass();
+
+	
 
 	return $result;	
 }

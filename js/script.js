@@ -45,6 +45,8 @@ function refreshInterface(){
 		isritualtime = false;
 	}
 
+	console.log("---------------");
+	console.log("check assembly");
 	if( 
 		checkifitstime(currentdate,ritualdata.assembly.eachdaystarttime,ritualdata.assembly.eachdayendtime)  ||
 		checkifitsdatetime(currentdate,ritualdata.assembly.finaldaystarttime,ritualdata.assembly.finaldayendtime,ritualdata.finalday) 
@@ -56,6 +58,8 @@ function refreshInterface(){
 	}
 
 
+	console.log("---------------");
+	console.log("check couples");
 	if( 
 		checkifitsdatetime(currentdate,ritualdata.couplesmeet.starttime,ritualdata.couplesmeet.endtime,ritualdata.finalday) 
 
@@ -82,12 +86,12 @@ function refreshInterface(){
 
 
 	if(user!=null && group!=null ){
-		console.log("[checkin to group]");
+		// console.log("[checkin to group]");
 		// sign in to group
 		$.getJSON(
 			APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + group.group,
 			function(data){
-				console.log(data);
+				// console.log(data);
 
 				if(data.error){
 					alert(data.error);
@@ -190,6 +194,16 @@ function fromLogintoMenu(){
 	});	
 }
 
+function toAssembly(){
+	$(".panel").fadeOut(function(){
+		$(".panel").css("display","none");
+		$("#assemblypanel").css("display","block");
+		$("#assemblypanel").fadeIn(function(){
+			//
+		});	
+	});	
+}
+
 function doLogin(){
 	login = $("#login").val().trim().toUpperCase();
 	password = $("#password").val().trim().toUpperCase();
@@ -200,7 +214,7 @@ function doLogin(){
 	$.getJSON(
 		APIBaseUrl + "?cmd=login&login=" + login + "&password=" + password + "&groupid=" + groupid,
 		function(data){
-			console.log(data);
+			// console.log(data);
 			if(data.error){
 				if(confirm(data.error)){
 					$.getJSON(
@@ -223,7 +237,7 @@ function doLogin(){
 				$.getJSON(
 					APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + groupid,
 					function(data){
-						console.log(data);
+						// console.log(data);
 
 						if(data.error){
 							alert(data.error);
@@ -253,7 +267,7 @@ function doSendData(){
 			result[name] = value;
 		}
 
-		console.log(result);
+		// console.log(result);
 
 		$.getJSON(
 			APIBaseUrl,
@@ -264,13 +278,13 @@ function doSendData(){
 				"jsondata": JSON.stringify(result)
 			},
 			function(data){
-				console.log(data);
+				// console.log(data);
 
 				if(data.error){
 					alert(data.error);
 				} else {
 					// if success: show menu
-					alert("Data sent!");
+					alert("Data shared!");
 				}
 				
 			}
@@ -323,7 +337,15 @@ function checkifitstime(currentDate,startTime,endTime){
 
 function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 
-	thatDate = new Date(ofDay);
+	console.log("currentDate:" + currentDate);
+	console.log("startTime:" + startTime);
+	console.log("endTime:" + endTime);
+	console.log("ofDay:" + ofDay);
+
+	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + ritualdata.referencetimezone ) );
+
+	console.log("......");
+	console.log("thatDate:" + thatDate);
 
 	startDate = new Date(thatDate.getTime());
 	startDate.setHours(startTime.split(":")[0]);
@@ -335,6 +357,10 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	endDate.setMinutes(endTime.split(":")[1]);
 	endDate.setSeconds(endTime.split(":")[2]);
 
+
+	console.log("......");
+	console.log("startDate:" + startDate);
+	console.log("endDate:" + endDate);
 
 	valid = startDate < currentDate && endDate > currentDate
 	return valid;
@@ -354,6 +380,21 @@ function setupmenuitems(){
 
 	$("#gotodata").click(function(){
 		toDataCollection();
+	});
+
+
+
+	d3.select("#assemblypanel")
+					.append("a")
+					.attr("href", ritualdata.assemblyjitsymeet )
+					.attr("target","_blank")
+					.append("div")
+					.attr("class","menuitem")
+					.attr("id","senddata")
+					.text("go to assembly");
+
+	$("#gotoassembly").click(function(){
+		toAssembly();
 	});
 }
 

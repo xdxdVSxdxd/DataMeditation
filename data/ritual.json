@@ -1,7 +1,8 @@
 {
 	"refreshtimems": 5000,
 	"assemblyjitsymeet": "https://meet.jit.si/DataRitualAssemblyJuly2020",
-	"finalday": "27/07/2020",
+	"finalday": "16 Jul 2020",
+	"referencetimezone": "GMT+0200",
 	"ritual": {
 		"starttime": "00:00:00",
 		"endtime":	"24:00:00"
