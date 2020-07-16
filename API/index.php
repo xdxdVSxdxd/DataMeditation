@@ -215,6 +215,7 @@ function doRemoveCouples($request,$conn){
 	$stmt = $conn->prepare($q);
 	$stmt->execute([  ':groupid' => $request["groupid"] ] );
 
+	$restult->message = "";
 	$restult->message = "Couples deleted for group " . $request["groupid"];
 
 	return $result;	
