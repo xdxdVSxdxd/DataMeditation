@@ -163,6 +163,8 @@ function doEndRitualStatus($request,$conn){
 function doCreateCouples($request,$conn){
 	$result = new \stdClass();
 
+	doRemoveCouples($request,$conn);
+
 	$q = "SELECT distinct userid FROM users_groups WHERE groupid = :groupid";
 	$stmt = $conn->prepare($q);
 	$stmt->execute([  ':groupid' => $request["groupid"] ] );
@@ -187,7 +189,7 @@ function doCreateCouples($request,$conn){
 	for($i = 0; $i<count($users); $i = $i + 2){
 		$i1 = $users[$i];
 		$i2 = $users[$i+1];
-		$link = uniqid() . "_" . $i;
+		$link = $request["link"] . uniqid() . "_" . $i;
 		$q = "INSERT INTO couples(groupid , iduser1 , iduser2 , linktochat ) VALUES (  :groupid , :iduser1 , :iduser2  , :link )";
 		$stmt = $conn->prepare($q);
 		$stmt->execute([  ':groupid' => $request["groupid"]  ,   ':iduser1' => $i1    ,    ':iduser2' => $i2 ,    ':link' => $link     ] );
