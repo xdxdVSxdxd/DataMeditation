@@ -78,6 +78,12 @@ CREATE TABLE IF NOT EXISTS `jsondata` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `userid` int(11) NOT NULL,
   `groupid` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `month` int(11) NOT NULL,
+  `day` int(11) NOT NULL,
+  `hour` int(11) NOT NULL,
+  `minute` int(11) NOT NULL,
+  `second` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `timestamp` (`timestamp`),
   KEY `userid` (`userid`,`groupid`)

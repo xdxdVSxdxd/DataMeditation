@@ -45,8 +45,6 @@ function refreshInterface(){
 		isritualtime = false;
 	}
 
-	console.log("---------------");
-	console.log("check assembly");
 	if( 
 		checkifitstime(currentdate,ritualdata.assembly.eachdaystarttime,ritualdata.assembly.eachdayendtime)  ||
 		checkifitsdatetime(currentdate,ritualdata.assembly.finaldaystarttime,ritualdata.assembly.finaldayendtime,ritualdata.finalday) 
@@ -58,8 +56,6 @@ function refreshInterface(){
 	}
 
 
-	console.log("---------------");
-	console.log("check couples");
 	if( 
 		checkifitsdatetime(currentdate,ritualdata.couplesmeet.starttime,ritualdata.couplesmeet.endtime,ritualdata.finalday) 
 
@@ -269,13 +265,27 @@ function doSendData(){
 
 		// console.log(result);
 
+		var cd = new Date();
+		var year = cd.getUTCFullYear();
+		var month = cd.getUTCMonth() + 1;
+		var day = cd.getUTCDate();
+		var hour = cd.getHours();
+		var minute = cd.getMinutes();
+		var second = cd.getSeconds();
+
 		$.getJSON(
 			APIBaseUrl,
 			{
 				"cmd": "updata",
 				"userid": user.iduser,
 				"groupid": group.groupid,
-				"jsondata": JSON.stringify(result)
+				"jsondata": JSON.stringify(result),
+				"year": year,
+				"month": month,
+				"day": day,
+				"hour": hour,
+				"minute": minute,
+				"second": second
 			},
 			function(data){
 				// console.log(data);
