@@ -163,13 +163,30 @@ function doEndRitualStatus($request,$conn){
 function doCreateCouples($request,$conn){
 	$result = new \stdClass();
 
+	$q = "SELECT distinct userid FROM users_groups WHERE groupid = :groupid";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([  ':groupid' => $request["groupid"] ] );
+	$u = $stmt->fetchAll();
+	
+	$users = array();
 
+	for($i = 0; $i<count($u); $i++){
+		$u[] = $u[$i]->id;
+	}
+
+	$result->users = $u;
 
 	return $result;	
 }
 
 function doRemoveCouples($request,$conn){
 	$result = new \stdClass();
+
+	$q = "DELETE FROM couples WHERE groupid = :groupid";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([  ':groupid' => $request["groupid"] ] );
+
+	$restult->message = "Couples deleted for group " . $request["groupid"];
 
 	return $result;	
 }
