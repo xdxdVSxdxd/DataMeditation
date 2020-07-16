@@ -145,6 +145,16 @@ function doJoinRitual($request,$conn){
 function doGetMyCouple($request,$conn){
 	$result = new \stdClass();
 
+	$q = "SELECT * FROM couples WHERE groupid = :groupid AND ( iduser1 = :id1 OR iduser2 = :id2 )";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([  ':groupid' => $request["groupid"]   ,    ':id1' => $request["userid"]     ,   ':id2' => $request["userid"]     ] );
+
+	$result->couples = array();
+
+	while($r = $stmt->fetch()){
+		$result->couples[]	 = $r;	
+	}
+
 	return $result;	
 }
 

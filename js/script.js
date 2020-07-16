@@ -406,6 +406,21 @@ function setupmenuitems(){
 	$("#gotoassembly").click(function(){
 		toAssembly();
 	});
+
+
+	$.getJSON(
+			APIBaseUrl,
+			{
+				"cmd": "getmycouple",
+				"userid": user.iduser,
+				"groupid": group.groupid
+			},
+			function(data){
+				
+			}
+	);
+
+
 }
 
 
