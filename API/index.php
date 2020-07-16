@@ -125,7 +125,7 @@ function doStoreData($request,$conn){
 
 	$q = "INSERT INTO jsondata(userid,groupid,timestamp,jsonstring,year,month,day,hour,minute,second) VALUES(:userid,:groupid, NOW(), :data , :year , :month , :day , :hour , :minute, :second )";
 	$stmt = $conn->prepare($q);
-	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] , ":data" => $request["jsondata"]   ,  ":year" => $request["year"]] , ":month" => $request["month"] , ":day" => $request["day"] , ":hour" => $request["hour"] , ":minute" => $request["minute"] , ":second" => $request["second"]);
+	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] , ":data" => $request["jsondata"]   ,  ":year" => $request["year"] , ":month" => $request["month"] , ":day" => $request["day"] , ":hour" => $request["hour"] , ":minute" => $request["minute"] , ":second" => $request["second"] ] );
 
 	return $result;	
 }
