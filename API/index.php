@@ -166,15 +166,13 @@ function doCreateCouples($request,$conn){
 	$q = "SELECT distinct userid FROM users_groups WHERE groupid = :groupid";
 	$stmt = $conn->prepare($q);
 	$stmt->execute([  ':groupid' => $request["groupid"] ] );
-	$u = $stmt->fetchAll();
-	
 	$users = array();
 
-	for($i = 0; $i<count($u); $i++){
-		$users[] = $u[$i]->userid;
+	while($u = $stmt->fetch()){
+		$users[] = $u->userid;
 	}
 
-	$result->users = $u;
+	$result->users = $users;
 
 	return $result;	
 }
