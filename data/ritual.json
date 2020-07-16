@@ -26,6 +26,7 @@
 		},
 		{
 			"label": "context",
+			"fieldid": "context",
 			"type": "select",
 			"options": [
 				"leaving home",

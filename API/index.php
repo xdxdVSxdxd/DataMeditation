@@ -123,6 +123,10 @@ function doSigninToGroup($request,$conn){
 function doStoreData($request,$conn){
 	$result = new \stdClass();
 
+	$q = "INSERT INTO jsondata(userid,groupid,timestamp,jsonstring) VALUES(:userid,:groupid, NOW(), :data )";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] ], ":data" => $request["jsondata"] );
+
 	return $result;	
 }
 

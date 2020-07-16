@@ -240,6 +240,45 @@ function doLogin(){
 	);
 }
 
+function doSendData(){
+	// collect data from form
+	// send it to server
+	// provide feedback
+
+	if(typeof ritualdata.datatocollect != 'undefined'){
+		var result = new Object();
+		for(var i = 0; i<ritualdata.datatocollect.length; i++){
+			var name = ritualdata.datatocollect[i].fieldid;
+			var value = $("#datacollectionpanel [name='" + name + "']").val();
+			result[name] = value;
+		}
+
+		console.log(result);
+
+		$.getJSON(
+			APIBaseUrl,
+			{
+				"cmd": "updata",
+				"userid": user.iduser,
+				"groupid": group.groupid,
+				"jsondata": JSON.stringify(result)
+			},
+			function(data){
+				console.log(data);
+
+				if(data.error){
+					alert(data.error);
+				} else {
+					// if success: show menu
+					alert("Data sent!");
+				}
+				
+			}
+		);
+	}
+
+
+}
 
 function checkifitstime(currentDate,startTime,endTime){
 
@@ -379,6 +418,17 @@ function setupdatacollectionform(){
 						.attr("name",ritualdata.datatocollect[i].fieldid)
 						.attr("id",ritualdata.datatocollect[i].fieldid);
 			}
+
 		}
+
+
+		formcontainer.append("div")
+					.attr("class","menuitem")
+					.attr("id","senddata")
+					.text("send data");
+
+		$("#senddata").click(function(){
+			doSendData();
+		});
 	}
 }

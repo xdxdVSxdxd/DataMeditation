@@ -76,7 +76,11 @@ CREATE TABLE IF NOT EXISTS `jsondata` (
   `id` int(11) NOT NULL DEFAULT '0',
   `jsonstring` text COLLATE utf8_unicode_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `userid` int(11) NOT NULL,
+  `groupid` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `timestamp` (`timestamp`),
+  KEY `userid` (`userid`,`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
