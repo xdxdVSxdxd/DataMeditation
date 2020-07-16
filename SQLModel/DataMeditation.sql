@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
 --
 
 CREATE TABLE IF NOT EXISTS `jsondata` (
-  `id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `jsonstring` text COLLATE utf8_unicode_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `userid` int(11) NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `jsondata` (
   PRIMARY KEY (`id`),
   KEY `timestamp` (`timestamp`),
   KEY `userid` (`userid`,`groupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
