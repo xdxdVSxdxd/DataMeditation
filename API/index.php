@@ -172,7 +172,38 @@ function doCreateCouples($request,$conn){
 		$users[] = $u["userid"];
 	}
 
-	$result->users = $users;
+	// shuffle vector
+	shuffle($users);
+
+	// take two-by-two
+	// form couples and chaturl
+	// what to do with odd?
+
+	if(count($users)%2!=0){
+		$ra = $users[ array_rand($users) ];
+		$users[] = $ra;
+	}
+
+	for($i = 0; $i<count($users); $i = $i + 2){
+		$i1 = $users[$i];
+		$i2 = $users[$i+1];
+		$link = $request["groupid"] . "_" . $i;
+		$q = "INSERT INTO couples(groupid , iduser1 , iduser2 , linktochat ) VALUES (  :groupid , :iduser1 , :iduser2  , :link )";
+		$stmt = $conn->prepare($q);
+		$stmt->execute([  ':groupid' => $request["groupid"]  ,   ':iduser1' => $i1    ,    ':iduser2' => $i2 ,    ':link' => $link     ] );
+	}
+
+	//$result->users = $users;
+
+	$q = "SELECT * FROM couples WHERE groupid = :groupid";
+	$stmt = $conn->prepare($q);
+	$stmt->execute([  ':groupid' => $request["groupid"]  ] );
+
+	$result->couples = array();
+
+	while($r = $stmt->fetch()){
+		$result->couples[]	 = $r;	
+	}
 
 	return $result;	
 }
