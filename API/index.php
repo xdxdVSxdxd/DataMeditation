@@ -171,7 +171,7 @@ function doCreateCouples($request,$conn){
 	$users = array();
 
 	for($i = 0; $i<count($u); $i++){
-		$users[] = $u[$i]["id"];
+		$users[] = $u[$i]->userid;
 	}
 
 	$result->users = $u;
