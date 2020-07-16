@@ -36,7 +36,7 @@ function setTiming(){
 }
 
 function refreshInterface(){
-	console.log("[refreshInterface]");
+	//console.log("[refreshInterface]");
 	// set status variables according to cureent time / date
 	var currentdate = new Date();
 	if( checkifitstime(currentdate,ritualdata.ritual.starttime,ritualdata.ritual.endtime) ){
@@ -66,14 +66,14 @@ function refreshInterface(){
 	}
 
 
-	console.log("isritualtime:");
-	console.log(isritualtime);
+	// console.log("isritualtime:");
+	//console.log(isritualtime);
 
-	console.log("isassemblytime:");
-	console.log(isassemblytime);
+	//console.log("isassemblytime:");
+	//console.log(isassemblytime);
 
-	console.log("iscouplesmeettime:");
-	console.log(iscouplesmeettime);
+	//console.log("iscouplesmeettime:");
+	//console.log(iscouplesmeettime);
 
 
 
@@ -106,26 +106,26 @@ function refreshInterface(){
 	
 	// update interfaces
 	if(isritualtime){
-		console.log("[ritual on]");
+		//console.log("[ritual on]");
 		$("#gotoritualwaitroom").css("display","block");
 	} else {
-		console.log("[ritual off]");
+		//console.log("[ritual off]");
 		$("#gotoritualwaitroom").css("display","none");
 	}
 
 	if(isassemblytime){
-		console.log("[assembly on]");
+		//console.log("[assembly on]");
 		$("#gotoassembly").css("display","block");
 	} else {
-		console.log("[assembly off]");
+		//console.log("[assembly off]");
 		$("#gotoassembly").css("display","none");
 	}
 
 	if(iscouplesmeettime){
-		console.log("[couples on]");
+		//console.log("[couples on]");
 		$("#gotocouples").css("display","block");
 	} else {
-		console.log("[couples off]");
+		//console.log("[couples off]");
 		$("#gotocouples").css("display","none");
 	}
 	
@@ -200,6 +200,16 @@ function toAssembly(){
 	});	
 }
 
+function toCouples(){
+	$(".panel").fadeOut(function(){
+		$(".panel").css("display","none");
+		$("#couplespanel").css("display","block");
+		$("#couplespanel").fadeIn(function(){
+			//
+		});	
+	});	
+}
+
 function doLogin(){
 	login = $("#login").val().trim().toUpperCase();
 	password = $("#password").val().trim().toUpperCase();
@@ -239,7 +249,8 @@ function doLogin(){
 							alert(data.error);
 						} else {
 							// if success: show menu
-							group = data;	
+							group = data;
+							doCouples();
 							fromLogintoMenu();
 						}
 						
@@ -248,6 +259,51 @@ function doLogin(){
 			}
 		}
 	);
+}
+
+function doCouples(){
+
+	$.getJSON(
+			APIBaseUrl,
+			{
+				"cmd": "getmycouple",
+				"userid": user.iduser,
+				"groupid": group.groupid
+			},
+			function(data){
+				console.log(data);
+
+				if(data.error){
+					alert(data.error);
+				} else {
+					// if success: show menu
+					
+					$("#couplespanel").html("");
+
+					for(var i = 0; i<data.couples.length; i++){
+						d3.select("#couplespanel")
+									.append("a")
+									.attr("href", data.couples[i].linktochat )
+									.attr("target","_blank")
+									.append("div")
+									.attr("class","menuitem")
+									.text("go to meet your other");
+					}
+
+					d3.select("#couplespanel")
+									.append("a")
+									.attr("href", ritualdata.assemblyjitsymeet )
+									.attr("target","_blank")
+									.append("div")
+									.attr("class","menuitem")
+									.attr("id","gotoassembly2")
+									.text("go to assembly");
+
+				}
+				
+			}
+	);
+
 }
 
 function doSendData(){
@@ -347,15 +403,15 @@ function checkifitstime(currentDate,startTime,endTime){
 
 function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 
-	console.log("currentDate:" + currentDate);
-	console.log("startTime:" + startTime);
-	console.log("endTime:" + endTime);
-	console.log("ofDay:" + ofDay);
+	//console.log("currentDate:" + currentDate);
+	//console.log("startTime:" + startTime);
+	//console.log("endTime:" + endTime);
+	//console.log("ofDay:" + ofDay);
 
 	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + ritualdata.referencetimezone ) );
 
-	console.log("......");
-	console.log("thatDate:" + thatDate);
+	//console.log("......");
+	//console.log("thatDate:" + thatDate);
 
 	startDate = new Date(thatDate.getTime());
 	startDate.setHours(startTime.split(":")[0]);
@@ -368,9 +424,9 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	endDate.setSeconds(endTime.split(":")[2]);
 
 
-	console.log("......");
-	console.log("startDate:" + startDate);
-	console.log("endDate:" + endDate);
+	//console.log("......");
+	//console.log("startDate:" + startDate);
+	//console.log("endDate:" + endDate);
 
 	valid = startDate < currentDate && endDate > currentDate
 	return valid;
@@ -400,26 +456,16 @@ function setupmenuitems(){
 					.attr("target","_blank")
 					.append("div")
 					.attr("class","menuitem")
-					.attr("id","senddata")
+					.attr("id","gotoassembly3")
 					.text("go to assembly");
 
 	$("#gotoassembly").click(function(){
 		toAssembly();
 	});
 
-
-	$.getJSON(
-			APIBaseUrl,
-			{
-				"cmd": "getmycouple",
-				"userid": user.iduser,
-				"groupid": group.groupid
-			},
-			function(data){
-				
-			}
-	);
-
+	$("#gotocouples").click(function(){
+		toCouples();
+	});
 
 }
 
