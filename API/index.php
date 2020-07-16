@@ -167,13 +167,11 @@ function doCreateCouples($request,$conn){
 	$stmt = $conn->prepare($q);
 	$stmt->execute([  ':groupid' => $request["groupid"] ] );
 	$u = $stmt->fetchAll();
-
-	print_r( $u );
 	
 	$users = array();
 
 	for($i = 0; $i<count($u); $i++){
-		$u[] = $u[$i]["id"];
+		$users[] = $u[$i]->id;
 	}
 
 	$result->users = $u;
