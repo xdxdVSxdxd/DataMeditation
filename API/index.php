@@ -169,7 +169,7 @@ function doCreateCouples($request,$conn){
 	$users = array();
 
 	while($u = $stmt->fetch()){
-		$users[] = $u->userid;
+		$users[] = $u["userid"];
 	}
 
 	$result->users = $users;
