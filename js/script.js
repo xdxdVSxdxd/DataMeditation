@@ -161,6 +161,9 @@ function toLogin(){
 
 
 function toMenu(){
+	if(waitingroomInterval!=null){
+		clearInterval(waitingroomInterval);
+	}
 	$(".panel").fadeOut(function(){
 		$(".panel").css("display","none");
 		$("#menupanel").css("display","block");
@@ -226,8 +229,30 @@ function toRitualWaitingRoom(){
 }
 
 function refreshWaitingRoom(){ 
+	console.log("[in waiting room]");
 	// say to API: I logged into the ritual (set timestamp) (cmd=inwaitingroom&userid=x&groupid=y)--> receves array of users in group with 0=absent, 1=present , 2=doing ritual , 3=ended ritual
 	// as answer, receive who is in ritual and their status (if status==doing ritual-->show that, if not: if timestamp < ritualdata.ritual.minutestoconsideronline minutes --> show "present" , timestamp > ritualdata.ritual.minutestoconsideronline minutes --> "show "not present"") 
+	if(user!=null && group!=null){
+
+		$.getJSON(
+			APIBaseUrl + "?cmd=inwaitingroom&userid=" + user.iduser + "&groupid=" + group.group + "&recentness=" + ritualdata.ritual.minutestoconsideronline,
+			function(data){
+				console.log(data);
+
+				if(data.error){
+					alert(data.error);
+				} else {
+
+						// continue
+
+				}
+				
+			}
+		);
+
+	}
+		
+
 	// draw interface, with the button to join ritual switched off and showing the ritualdata.ritual.waitingforothers message 
 	// if number of users that are here is at least number of participants * ritualdata.ritual.atleastthispartofgrouptostartritual --> turn on "join ritual" button
 	// when you press the join ritual button: clearInterval(waitingroomInterval) , set the "doing ritual" for me using the API, clear and hide the waitingroom, show ritual interface and start ritual by getting the date's data
@@ -298,7 +323,7 @@ function doCouples(){
 				"groupid": group.groupid
 			},
 			function(data){
-				console.log(data);
+				//console.log(data);
 
 				if(data.error){
 					alert(data.error);
