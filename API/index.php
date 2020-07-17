@@ -35,6 +35,8 @@ function doLogin($request,$conn){
 	    $result->error = "Unknown user. Register?";
 	}
 
+	$stmt->closeCursor();
+
 	return $result;	
 }
 
@@ -49,9 +51,9 @@ function doRegister($request,$conn){
 
 	// register
 	if(!$user || $user==NULL){
-		$q = "INSERT INTO users(login,pwd) VALUES( :login , :pwd )";
-		$stmt = $conn->prepare($q);
-		$stmt->execute([':login' => $request["login"]  ,   ':pwd' => password_hash($request["password"],PASSWORD_DEFAULT)    ]);
+		$q2 = "INSERT INTO users(login,pwd) VALUES( :login , :pwd )";
+		$stmt2 = $conn->prepare($q2);
+		$stmt2->execute([':login' => $request["login"]  ,   ':pwd' => password_hash($request["password"],PASSWORD_DEFAULT)    ]);
 
 		$result->login = $request["login"];
 	    $result->iduser = $conn->lastInsertId();
@@ -59,6 +61,8 @@ function doRegister($request,$conn){
 	} else {
 		$result->error = "User already exists.";
 	}
+
+	$stmt->closeCursor();
 
 	return $result;	
 }
@@ -73,9 +77,9 @@ function doSigninToGroup($request,$conn){
 
 	if(!$group || $group==NULL){
 		//insert group and produce data
-		$q = "INSERT INTO groups(groupname) VALUES( :groupname )";
-		$stmt = $conn->prepare($q);
-		$stmt->execute([':groupname' => $request["groupid"] ]);
+		$q2 = "INSERT INTO groups(groupname) VALUES( :groupname )";
+		$stmt2 = $conn->prepare($q2);
+		$stmt2->execute([':groupname' => $request["groupid"] ]);
 
 		$result->group = $request["groupid"];
 	    $result->groupid = $conn->lastInsertId();
@@ -83,6 +87,8 @@ function doSigninToGroup($request,$conn){
 		$result->group = $request["groupid"];
 	    $result->groupid = $group["id"];
 	}
+
+	$stmt->closeCursor();
 
 	//find if there is a previous registration of the user in the gorup
 	$q = "SELECT lastlogin FROM users_groups WHERE userid=:userid AND groupid=:groupid LIMIT 0,1";
@@ -92,18 +98,22 @@ function doSigninToGroup($request,$conn){
 
 	if($signin || $signin!=NULL){
 		// if there is --> update it
-		$q = "UPDATE users_groups SET lastlogin=NOW() WHERE userid=:userid AND groupid=:groupid";
-		$stmt = $conn->prepare($q);
-		$stmt->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
+		$q2 = "UPDATE users_groups SET lastlogin=NOW() WHERE userid=:userid AND groupid=:groupid";
+		$stmt2 = $conn->prepare($q2);
+		$stmt2->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
 
 	} else {
 		// if there is not --> insert it
-		$q = "INSERT INTO users_groups(userid,groupid,lastlogin) VALUES(:userid,:groupid, NOW() )";
-		$stmt = $conn->prepare($q);
-		$stmt->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
+		$q2 = "INSERT INTO users_groups(userid,groupid,lastlogin) VALUES(:userid,:groupid, NOW() )";
+		$stmt2 = $conn->prepare($q2);
+		$stmt2->execute([':userid' => $request["iduser"] , ':groupid' => $result->groupid ]);
 
 
 	}
+
+	$stmt->closeCursor();
+
+
 	// insert group, groupid and timestamp in result
 
 	$q = "SELECT lastlogin FROM users_groups WHERE userid=:userid AND groupid=:groupid LIMIT 0,1";
@@ -116,6 +126,8 @@ function doSigninToGroup($request,$conn){
 	} else {
 		$result->error = "Could not signin to group";
 	}
+
+	$stmt->closeCursor();
 
 	return $result;	
 }
@@ -130,8 +142,87 @@ function doStoreData($request,$conn){
 	return $result;	
 }
 
-function doListUsersInGroups($request,$conn){
+function doInWaitingRoom($request,$conn){
 	$result = new \stdClass();
+
+	// communicate that the user logged into the ritual's waiting room
+	// cmd=inwaitingroom&userid=x&groupid=y&recentness=z) 
+	// --> returns array of users in group with 0=absent, 1=present , 2=doing ritual , 3=ended ritual
+
+	// update my status in the waitingroom
+	$userid = $request["userid"];
+	$groupid = $request["groupid"];
+	$recentness = $request["recentness"];
+	$q1 = "SELECT id,status FROM access_to_ritual WHERE iduser = :userid AND groupid = :groupid ORDER BY t DESC LIMIN 0,1";
+	$stmt1 = $conn->prepare($q1);
+	$stmt1->execute([':userid' => $userid , ':groupid' => $groupid  ] );
+	if( $r1 = $stmt1->fetch() ){
+		$idrow = $r1["id"];
+		$status = $r1["status"];
+
+		$q2 = "UPDATE access_to_ritual SET status=1 , t = NOW() WHERE iduser = :userid AND groupid = :groupid";
+		$stmt2 = $conn->prepare($q2);
+		$stmt2->execute([':userid' => $userid , ':groupid' => $groupid  ] );
+
+	}
+	$stmt1->closeCursor();
+
+	// get all users in group from users_groups and mark them with status = 0
+	$ug = array();
+	
+	$q2 = "SELECT u.id as id, u.login as login, ug.lastlogin as lastlogin FROM users u , users_groups ug WHERE ug.groupid = :groupid AND u.id=ug.userid";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid  ] );
+
+	while($r2 = $stmt2->fetch()){
+		$uu = new \stdClass();
+		$uu->id = $r2["id"];
+		$uu->login = $r2["login"];
+		$uu->lastlogin = $r2["lastlogin"];
+		$uu->status = 0;
+
+		$ug[] = $uu;
+	}
+
+	$stmt2->closeCursor();
+
+	// get all elements from today from access_to_ritual where timestamp is more recent than "recentness" minutes, and mark them as "present-->1" in status
+	$q2 = "SELECT iduser FROM access_to_ritual WHERE groupid = :groupid AND t > NOW() - INTERVAL " . $recentness . " MINUTE";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid  ] );
+
+	while($r2 = $stmt2->fetch()){
+		$idtoupdate = $r2["iduser"];
+		for($i=0; $i<count($ug); $i++){
+			if($idtoupdate==$ug[$i]->id){
+				$ug[$i]->status = 1;
+			}
+		}
+	}
+
+	$stmt2->closeCursor();
+
+	// get all elements from today from access_to_ritual where status = 2 o 3, and mark them accordingly on status
+
+	$q2 = "SELECT iduser,status FROM access_to_ritual WHERE groupid = :groupid AND ( status = 2 OR status = 3  ) ";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid  ] );
+
+	while($r2 = $stmt2->fetch()){
+		$idtoupdate = $r2["iduser"];
+		for($i=0; $i<count($ug); $i++){
+			if($idtoupdate==$ug[$i]->id){
+				$ug[$i]->status = $r2["status"];
+			}
+		}
+	}
+
+	$stmt2->closeCursor();
+
+
+	// return result
+
+	$result->usersingroup = $ug;
 
 	return $result;	
 }
@@ -154,6 +245,8 @@ function doGetMyCouple($request,$conn){
 	while($r = $stmt->fetch()){
 		$result->couples[]	 = $r;	
 	}
+
+	$stmt->closeCursor();
 
 	return $result;	
 }
@@ -183,6 +276,8 @@ function doCreateCouples($request,$conn){
 	while($u = $stmt->fetch()){
 		$users[] = $u["userid"];
 	}
+
+	$stmt->closeCursor();
 
 	// shuffle vector
 	shuffle($users);
@@ -217,6 +312,8 @@ function doCreateCouples($request,$conn){
 		$result->couples[]	 = $r;	
 	}
 
+	$stmt->closeCursor();
+
 	return $result;	
 }
 
@@ -247,8 +344,8 @@ if($cmd=="login"){
 } else if($cmd=="updata"){
 	$result = doStoreData($_REQUEST,$conn);
 } else if($cmd=="listgroup"){
-	$result = doListUsersInGroups($_REQUEST,$conn);
-} else if($cmd=="joinritual"){
+	$result = doInWaitingRoom($_REQUEST,$conn);
+} else if($cmd=="inwaitingroom"){
 	$result = doJoinRitual($_REQUEST,$conn);
 } else if($cmd=="getmycouple"){
 	$result = doGetMyCouple($_REQUEST,$conn);
