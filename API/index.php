@@ -155,7 +155,7 @@ function doInWaitingRoom($request,$conn){
 	$userid = $request["userid"];
 	$groupid = $request["groupid"];
 	$recentness = $request["recentness"];
-	$q1 = "SELECT id,status FROM access_to_ritual WHERE iduser = :userid AND groupid = :groupid ORDER BY t DESC LIMIN 0,1";
+	$q1 = "SELECT id,status FROM access_to_ritual WHERE iduser = :userid AND groupid = :groupid ORDER BY t DESC LIMIT 0,1";
 	$stmt1 = $conn->prepare($q1);
 	$stmt1->execute([':userid' => $userid , ':groupid' => $groupid  ] );
 	if( $r1 = $stmt1->fetch() ){
