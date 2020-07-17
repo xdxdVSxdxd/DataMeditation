@@ -259,6 +259,12 @@ function doGetMyCoupleDataForRitual($request,$conn){
 	return $result;	
 }
 
+function doListUsersInGroups($request,$conn){
+	$result = new \stdClass();
+
+	return $result;	
+}
+
 function doEndRitualStatus($request,$conn){
 	$result = new \stdClass();
 
@@ -346,9 +352,9 @@ if($cmd=="login"){
 } else if($cmd=="updata"){
 	$result = doStoreData($_REQUEST,$conn);
 } else if($cmd=="listgroup"){
-	$result = doInWaitingRoom($_REQUEST,$conn);
+	$result = doListUsersInGroups($_REQUEST,$conn);
 } else if($cmd=="inwaitingroom"){
-	$result = doJoinRitual($_REQUEST,$conn);
+	$result = doInWaitingRoom($_REQUEST,$conn);
 } else if($cmd=="getmycouple"){
 	$result = doGetMyCouple($_REQUEST,$conn);
 } else if($cmd=="getmycoupledataforritual"){
