@@ -145,7 +145,7 @@ function doStoreData($request,$conn){
 function doInWaitingRoom($request,$conn){
 	$result = new \stdClass();
 
-	$restult->error = "in waiting room";
+	//$restult->error = "in waiting room";
 
 	// communicate that the user logged into the ritual's waiting room
 	// cmd=inwaitingroom&userid=x&groupid=y&recentness=z) 
