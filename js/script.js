@@ -13,6 +13,9 @@ var user = null;
 var group = null;
 
 
+var dataforritual = null;
+
+
 $(document).ready(function () {
 
 	$.getJSON("data/ritual.json?v=" + Math.random()*Math.random() ,function(data){
@@ -215,6 +218,9 @@ function toCouples(){
 
 
 function toRitualWaitingRoom(){
+	
+	$("#joinritualbutton").css("display","none");
+
 	$(".panel").fadeOut(function(){
 		$(".panel").css("display","none");
 		$("#ritualwaitroompanel").css("display","block");
@@ -229,13 +235,13 @@ function toRitualWaitingRoom(){
 }
 
 function refreshWaitingRoom(){ 
-	console.log("[in waiting room]");
+	//console.log("[in waiting room]");
 	// say to API: I logged into the ritual (set timestamp) (cmd=inwaitingroom&userid=x&groupid=y)--> receves array of users in group with 0=absent, 1=present , 2=doing ritual , 3=ended ritual
 	// as answer, receive who is in ritual and their status (if status==doing ritual-->show that, if not: if timestamp < ritualdata.ritual.minutestoconsideronline minutes --> show "present" , timestamp > ritualdata.ritual.minutestoconsideronline minutes --> "show "not present"") 
 	if(user!=null && group!=null){
 
 		$.getJSON(
-			APIBaseUrl + "?cmd=inwaitingroom&userid=" + user.iduser + "&groupid=" + group.group + "&recentness=" + ritualdata.ritual.minutestoconsideronline,
+			APIBaseUrl + "?cmd=inwaitingroom&userid=" + user.iduser + "&groupid=" + group.groupid + "&recentness=" + ritualdata.ritual.minutestoconsideronline,
 			function(data){
 				console.log(data);
 
@@ -244,7 +250,56 @@ function refreshWaitingRoom(){
 				} else {
 
 						// continue
+						// draw interface, with the button to join ritual switched off 
+						// and showing the ritualdata.ritual.waitingforothers message
 
+						var waitingroomcontainer = d3.select("#peopleintheroom");
+
+						var t = d3.transition()
+      							.duration(750);
+
+						var usersinritual = waitingroomcontainer.selectAll(".userinwaitingroom")
+							.data(data.usersingroup, function(d){ return d; });
+
+							var enter = usersinritual.enter()
+										.append('div')
+										.attr("class",function(d){
+											var c = "userinwaitingroom";
+											if(d.status == 0){
+												c = c + " userabsent";
+											} else if(d.status == 1){
+												c = c + " userwaiting";
+											} else if(d.status == 2){
+												c = c + " usersinritual";
+											} else if(d.status == 3){
+												c = c + " useroutofritual";
+											}
+											return c;
+										})
+										.text(function(d){ return d.login; });
+
+							var exit = usersinritual.exit().remove();
+
+
+						// if number of users that are here is at least number of participants * ritualdata.ritual.atleastthispartofgrouptostartritual --> turn on "join ritual" button
+						var minnumberofusers = Math.floor( data.usersingroup.length*ritualdata.ritual.atleastthispartofgrouptostartritual );
+						var userscurrentlyhere = 0;
+						for(var i = 0; i<data.usersingroup.length ; i++){
+							if(data.usersingroup[i].status>0){
+								userscurrentlyhere++;
+							}
+						}
+
+						if(userscurrentlyhere>=minnumberofusers){ 
+							$("#joinritualbutton").css("display","block");
+						} else {
+							$("#joinritualbutton").css("display","none");
+						}
+
+						
+						
+						// when ritual ends: remember to do *endritual* with API
+						// TODO
 				}
 				
 			}
@@ -252,11 +307,6 @@ function refreshWaitingRoom(){
 
 	}
 		
-
-	// draw interface, with the button to join ritual switched off and showing the ritualdata.ritual.waitingforothers message 
-	// if number of users that are here is at least number of participants * ritualdata.ritual.atleastthispartofgrouptostartritual --> turn on "join ritual" button
-	// when you press the join ritual button: clearInterval(waitingroomInterval) , set the "doing ritual" for me using the API, clear and hide the waitingroom, show ritual interface and start ritual by getting the date's data
-	// when ritual ends: remember to do *endritual* with API
 }
 
 
@@ -500,6 +550,8 @@ function setupmenuitems(){
 		toDataCollection();
 	});
 
+			d3.select("#watingmessage").text(ritualdata.ritual.waitingforothers);
+
 
 
 	d3.select("#assemblypanel")
@@ -523,8 +575,62 @@ function setupmenuitems(){
 		toRitualWaitingRoom();
 	});
 
+
+
+	$("#joinritualbutton").click(function(){
+		startRitual();
+	});
+
+
+
 }
 
+
+function startRitual(){
+	if(user!=null && group!=null){
+		// when you press the join ritual button: clearInterval(waitingroomInterval) , 
+		if(waitingroomInterval!=null){
+			clearInterval(waitingroomInterval);
+			waitingroomInterval = null;
+		}
+		// set the "doing ritual" for me using the API,
+
+		var dateObj = new Date();
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var year = dateObj.getUTCFullYear();
+
+		$.getJSON(
+			APIBaseUrl,
+			{
+				"cmd": "getmycoupledataforritual",
+				"userid": user.iduser,
+				"groupid": group.groupid,
+				"year": year,
+				"month": month,
+				"day": day
+			},
+			function(data){
+				// console.log(data);
+
+				dataforritual = data;
+
+				if(data.error){
+					alert(data.error);
+				} else {
+					// if success: show menu
+					visualize();
+				}
+				
+			}
+		);
+
+
+		// clear and hide the waitingroom, 
+		// show ritual interface and start ritual by getting the date's data	
+	}
+	
+}
 
 function setupdatacollectionform(){
 	var formcontainer = d3.select("#datacollectionpanel").append("div").attr("class","datacollectionform");
@@ -599,4 +705,10 @@ function setupdatacollectionform(){
 			doSendData();
 		});
 	}
+}
+
+
+
+function visualize(){
+	//do visualization con variabile dataforritual
 }

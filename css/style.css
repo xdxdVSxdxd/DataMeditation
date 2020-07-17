@@ -98,6 +98,43 @@ body,html{
   to {background-color: #FFFF00; color: #000000;}
 }
 
+.userinwaitingroom{
+	padding: 10px;
+	margin: 10px;
+	line-height: 25px;
+	width: calc(50% - 40px);
+	overflow: hidden;
+}
+
+.userabsent{
+	background: #eeeeee;
+	color: #000000;
+}
+
+.userwaiting{
+	background: #FF8000;
+	color: #ffffff;
+}
+
+.usersinritual{
+	background: #00FF00;
+	color: #000000;
+}
+
+.useroutofritual{
+	background: #FF0000;
+	color: #ffffff;
+}
+
+#watingmessage{
+	padding: 10px;
+	margin: 10px;
+}
+
+#joinritualbutton{
+	display: none;
+}
+
 @media all and (max-width: 800px) {
 
 }

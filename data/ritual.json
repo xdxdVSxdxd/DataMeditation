@@ -8,7 +8,7 @@
 		"endtime":	"24:00:00",
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.7,
-		"ritualdata.ritual.waitingforothers": "Let's wait until more people are here"
+		"waitingforothers": "Let's wait until more people are here"
 	},
 	"couplesmeet": {
 		"starttime": "00:00:00",

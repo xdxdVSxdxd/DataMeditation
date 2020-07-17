@@ -262,6 +262,61 @@ function doGetMyCouple($request,$conn){
 function doGetMyCoupleDataForRitual($request,$conn){
 	$result = new \stdClass();
 
+	// set status = 2 in access_to_ritual
+
+	$userid = $request["userid"];
+	$groupid = $request["groupid"];
+
+	$year = $request["year"];
+	$month = $request["month"];
+	$day = $request["day"];
+
+	$fromdate = $year . '-' . $month . '-' . $day . ' 00:00:01';
+	$todate = $year . '-' . $month . '-' . $day . ' 23:59:59';
+
+	$q2 = "UPDATE access_to_ritual SET status=2 , t = NOW() WHERE iduser = :userid AND groupid = :groupid";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':userid' => $userid , ':groupid' => $groupid  ] );
+
+	// trovare il mio altro
+	$q2 = "SELECT iduser1,iduser2 FROM couples WHERE groupid = :groupid AND ( iduser1 = :iduser1 OR iduser2 = :iduser2 ) LIMIT 0,1";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid  ,   ':iduser1' => $userid   ,  ':iduser2' => $userid  ] );
+	$theotherid = $userid;
+	if( $r1 = $stmt2->fetch() ){
+		if($r1["iduser1"]!=$userid){
+			$theotherid = $r1["iduser1"];
+		} else {
+			$theotherid = $r1["iduser1"];
+		}
+	}
+	$stmt2->closeCursor();
+
+	// pescare i dati
+	$q2 = "SELECT jsonstring,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND ( iduser1 = :iduser1 OR iduser2 = :iduser2 ) AND year = :year AND month = :month AND day = :day ORDER BY hour ASC, minute ASC, second ASC";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid  ,   ':iduser1' => $userid   ,  ':iduser2' => $userid   ,  ':year' => $year   ,  ':month' => $month   ,  ':day' => $day  ] );
+	$theData = new \stdClass();
+	$theData->myData = array();
+	$theData->theOthersData = array();
+	while( $r1 = $stmt2->fetch() ){
+		$o = new \stdClass();
+		$o->jsonstring = $r1["jsonstring"];
+		$o->userid = $r1["userid"];
+		$o->hour = $r1["hour"];
+		$o->minute = $r1["minute"];
+		$o->second = $r1["second"];
+		if($o->userid==$userid){
+			$theData->myData[] = $o;
+		} else {
+			$theData->theOthersData[] = $o;
+		}
+	}
+	$stmt2->closeCursor();
+
+	// restituire
+	$result->theData = $theData;
+	
 	return $result;	
 }
 
