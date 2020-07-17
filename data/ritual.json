@@ -23,74 +23,65 @@
 	"datatocollect": [
 
 		{
-			"label": "asleep",
-			"fieldid": "asleep",
-			"type": "switch",
-			"positions": [ "awake" , "asleep"]
-		},
-		{
 			"label": "context",
 			"fieldid": "context",
-			"type": "select",
-			"options": [
-				"leaving home",
-				"back home",
-				"moving",
-				"place of culture",
-				"place of work",
-				"place of commerce",
-				"place of entertainment"
-			]
-		},
-		{
-			"label": "moving",
-			"fieldid": "moving",
-			"type": "select",
-			"options": [
-				"not going from one place to the other",
-				"walking",
-				"public transport",
-				"private transport",
-				"car/bike/etc sharing"
+			"type": "switch",
+			"positions": [ 
+				["no answer","sounds/silence.waw"],
+				["I'm awake","sounds/awake.waw"] , 
+				["I'm going to sleep","sounds/sleep.waw"],
+				["I'm home","sounds/home.waw"],
+				["I'm in a place of culture","sounds/culture.waw"],
+				["I'm in a place for working","sounds/working.waw"],
+				["I'm in a place for consumption","sounds/consumption.waw"],
+				["I'm in a random place","sounds/random.waw"],
+				["I'm moving on foot","sounds/walking.waw"],
+				["I'm on a bycicle","sounds/bicycle.waw"],
+				["I'm on public transport","sounds/publictransport.waw"],
+				["I'm on another private vehicle","sounds/car.waw"],
+				["I'm using a car/bike/other sharing","sounds/sharing.waw"]
 			]
 		},
 		{
 			"label": "interacting",
 			"fieldid": "interacting",
-			"type": "select",
-			"options": [
-				"not interacting with anyone",
-				"greeted a person",
-				"touched person",
-				"hug",
-				"kiss",
-				"sex"
+			"type": "switch",
+			"positions": [
+				["no answer","sounds/silence.waw"],
+				["not interacting with anyone","sounds/notinteracting.waw"],
+				["I greeted a person","sounds/salute.waw"],
+				["I touched person","sounds/touched.waw"],
+				["we hug","sounds/hug.waw"],
+				["we kissed","sounds/kiss.waw"],
+				["we had sex","sounds/sex.waw"]
 			]
 		},
 		{
 			"label": "emotion",
 			"fieldid": "emotion",
-			"type": "select",
-			"options": [
-				"anger",
-				"fear",
-				"sadness",
-				"joy",
-				"surprise",
-				"expectance",
-				"disgust",
-				"acceptance"
+			"type": "switch",
+			"positions": [
+				["no answer","sounds/silence.waw"],
+				["anger","sounds/anger.waw"],
+				["fear","sounds/fear.waw"],
+				["sadness","sounds/sadness.waw"],
+				["joy","sounds/joy.waw"],
+				["surprise","sounds/surprise.waw"],
+				["expectance","sounds/expectance.waw"],
+				["disgust","sounds/disgust.waw"],
+				["acceptance","sounds/acceptance.waw"]
 			]
 		},
 		{
 			"label": "with?",
 			"fieldid": "with",
-			"type": "select",
-			"options": [
-				"alone",
-				"with 1 person",
-				"with a few people (around max 6)",
-				"in a crowd"
+			"type": "switch",
+			"positions": [
+				["no answer","sounds/silence.waw"],
+				["alone","sounds/alone.waw"],
+				["with 1 person","sounds/1person.waw"],
+				["with a few people (around max 6)","sounds/fewpeople.waw"],
+				["in a crowd","sounds/crowd.waw"]
 			]
 		},
 		{

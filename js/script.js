@@ -276,7 +276,10 @@ function refreshWaitingRoom(){
 											}
 											return c;
 										})
-										.text(function(d){ return d.login; });
+										.text(function(d){ return d.login; })
+										.merge(usersinritual)
+										.transition()
+  										.duration(750);
 
 							var exit = usersinritual.exit().remove();
 
@@ -652,12 +655,12 @@ function setupdatacollectionform(){
 						.attr("type","radio")
 						.attr("name",ritualdata.datatocollect[i].fieldid)	
 						.attr("id",ritualdata.datatocollect[i].fieldid + j)
-						.attr("value",ritualdata.datatocollect[i].positions[j]);
+						.attr("value",ritualdata.datatocollect[i].positions[j][0]);
 
 					fh
 						.append("label")
 						.attr("for", ritualdata.datatocollect[i].fieldid + j)
-						.text(ritualdata.datatocollect[i].positions[j]);
+						.text(ritualdata.datatocollect[i].positions[j][0]);
 				}
 				
 
@@ -674,8 +677,8 @@ function setupdatacollectionform(){
 				for(var j=0; j<ritualdata.datatocollect[i].options.length; j++){
 					fh	
 						.append("option")
-						.attr("value",ritualdata.datatocollect[i].options[j])
-						.text(ritualdata.datatocollect[i].options[j]);
+						.attr("value",ritualdata.datatocollect[i].options[j][0])
+						.text(ritualdata.datatocollect[i].options[j][0]);
 				}
 				
 
@@ -712,4 +715,13 @@ function setupdatacollectionform(){
 
 function visualize(){
 	//do visualization con variabile dataforritual
+	$(".panel").fadeOut(function(){
+		$(".panel").css("display","none");
+		$("#ritualinterfacepanel").css("display","block");
+		$("#ritualinterfacepanel").fadeIn(function(){
+			//
+
+
+		});	
+	});
 }
