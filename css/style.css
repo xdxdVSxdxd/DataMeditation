@@ -24,6 +24,18 @@ body,html{
 	padding: 20px;
 }
 
+.panelcover{
+	background: #000000;
+	color: #FFFFFF;
+	position: fixed;
+	top: 00px;
+	left: 0px;
+	width: calc(100% - 40px);
+	height: calc(100% - 40px);
+	margin: 0px;
+	padding: 20px;
+	overflow: scroll;
+}
 
 
 #loginpanel{
@@ -146,6 +158,10 @@ body,html{
 	font: bold 25px 'Helvetica Neue',sans-serif;
 }
 
+.fieldholder{
+	overflow: auto;
+}
+
 .fieldholder input{
 	margin-left: 15px;
 }
@@ -154,6 +170,8 @@ body,html{
 	margin-right: 15px;
 	color: #aaaaaa;
 	font: 15px 'Helvetica Neue',sans-serif;
+	width: 150px;
+	overflow: hidden;
 }
 
 .datacollectionform{

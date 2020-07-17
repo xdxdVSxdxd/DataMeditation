@@ -153,8 +153,8 @@ function start(){
 
 
 function toLogin(){
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel  , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#loginpanel").css("display","block");
 		$("#loginpanel").fadeIn(function(){
 			//
@@ -167,8 +167,8 @@ function toMenu(){
 	if(waitingroomInterval!=null){
 		clearInterval(waitingroomInterval);
 	}
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#menupanel").css("display","block");
 		$("#menupanel").fadeIn(function(){
 			//
@@ -177,8 +177,8 @@ function toMenu(){
 }
 
 function toDataCollection(){
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#datacollectionpanel").css("display","block");
 		$("#datacollectionpanel").fadeIn(function(){
 			//
@@ -187,8 +187,8 @@ function toDataCollection(){
 }
 
 function fromLogintoMenu(){
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#menupanel").css("display","block");
 		$("#menupanel").fadeIn(function(){
 			//
@@ -197,8 +197,8 @@ function fromLogintoMenu(){
 }
 
 function toAssembly(){
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#assemblypanel").css("display","block");
 		$("#assemblypanel").fadeIn(function(){
 			//
@@ -207,8 +207,8 @@ function toAssembly(){
 }
 
 function toCouples(){
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#couplespanel").css("display","block");
 		$("#couplespanel").fadeIn(function(){
 			//
@@ -221,8 +221,8 @@ function toRitualWaitingRoom(){
 	
 	$("#joinritualbutton").css("display","none");
 
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#ritualwaitroompanel").css("display","block");
 		$("#ritualwaitroompanel").fadeIn(function(){
 			//
@@ -715,8 +715,8 @@ function setupdatacollectionform(){
 
 function visualize(){
 	//do visualization con variabile dataforritual
-	$(".panel").fadeOut(function(){
-		$(".panel").css("display","none");
+	$(".panel , .panelcover").fadeOut(function(){
+		$(".panel , .panelcover").css("display","none");
 		$("#ritualinterfacepanel").css("display","block");
 		$("#ritualinterfacepanel").fadeIn(function(){
 			//
