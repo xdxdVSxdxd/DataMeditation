@@ -166,6 +166,12 @@ function doInWaitingRoom($request,$conn){
 		$stmt2 = $conn->prepare($q2);
 		$stmt2->execute([':userid' => $userid , ':groupid' => $groupid  ] );
 
+	} else {
+		
+		$q2 = "INSERT INTO access_to_ritual(iduser,groupid,t,status) VALUES ( :userid , :groupid, NOW() , 1 )";
+		$stmt2 = $conn->prepare($q2);
+		$stmt2->execute([':userid' => $userid , ':groupid' => $groupid  ] );
+
 	}
 	$stmt1->closeCursor();
 
