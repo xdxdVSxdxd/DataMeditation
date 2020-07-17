@@ -287,7 +287,7 @@ function doGetMyCoupleDataForRitual($request,$conn){
 		if($r1["iduser1"]!=$userid){
 			$theotherid = $r1["iduser1"];
 		} else {
-			$theotherid = $r1["iduser1"];
+			$theotherid = $r1["iduser2"];
 		}
 	}
 	$stmt2->closeCursor();
