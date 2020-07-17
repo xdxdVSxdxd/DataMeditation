@@ -587,6 +587,7 @@ function setupmenuitems(){
 
 
 function startRitual(){
+	console.log("[in startRitual]");
 	if(user!=null && group!=null){
 		// when you press the join ritual button: clearInterval(waitingroomInterval) , 
 		if(waitingroomInterval!=null){

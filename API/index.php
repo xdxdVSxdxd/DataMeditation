@@ -293,9 +293,9 @@ function doGetMyCoupleDataForRitual($request,$conn){
 	$stmt2->closeCursor();
 
 	// pescare i dati
-	$q2 = "SELECT jsonstring,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND ( iduser1 = :iduser1 OR iduser2 = :iduser2 ) AND year = :year AND month = :month AND day = :day ORDER BY hour ASC, minute ASC, second ASC";
+	$q2 = "SELECT jsonstring,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND userid = :iduser  AND year = :year AND month = :month AND day = :day ORDER BY hour ASC, minute ASC, second ASC";
 	$stmt2 = $conn->prepare($q2);
-	$stmt2->execute([':groupid' => $groupid  ,   ':iduser1' => $userid   ,  ':iduser2' => $userid   ,  ':year' => $year   ,  ':month' => $month   ,  ':day' => $day  ] );
+	$stmt2->execute([':groupid' => $groupid  ,   ':iduser' => $userid  ,  ':year' => $year   ,  ':month' => $month   ,  ':day' => $day  ] );
 	$theData = new \stdClass();
 	$theData->myData = array();
 	$theData->theOthersData = array();
@@ -316,7 +316,7 @@ function doGetMyCoupleDataForRitual($request,$conn){
 
 	// restituire
 	$result->theData = $theData;
-	
+
 	return $result;	
 }
 
