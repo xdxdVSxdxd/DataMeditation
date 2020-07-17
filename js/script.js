@@ -587,7 +587,7 @@ function setupmenuitems(){
 
 
 function startRitual(){
-	console.log("[in startRitual]");
+	//console.log("[in startRitual]");
 	if(user!=null && group!=null){
 		// when you press the join ritual button: clearInterval(waitingroomInterval) , 
 		if(waitingroomInterval!=null){
@@ -612,7 +612,7 @@ function startRitual(){
 				"day": day
 			},
 			function(data){
-				// console.log(data);
+				console.log(data);
 
 				dataforritual = data;
 
