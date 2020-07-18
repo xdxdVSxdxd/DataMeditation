@@ -153,13 +153,14 @@ function start(){
 
 
 function toLogin(){
-	$(".panel  , .panelcover").fadeOut(function(){
+	$(".panel  , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#loginpanel").css("display","block");
 		$("#loginpanel").fadeIn(function(){
 			//
-		});	
+		});
 	});
+			
 }
 
 
@@ -167,53 +168,60 @@ function toMenu(){
 	if(waitingroomInterval!=null){
 		clearInterval(waitingroomInterval);
 	}
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#menupanel").css("display","block");
 		$("#menupanel").fadeIn(function(){
 			//
-		});	
+		});
 	});
+			
 }
 
 function toDataCollection(){
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#datacollectionpanel").css("display","block");
 		$("#datacollectionpanel").fadeIn(function(){
 			//
 		});	
+		
 	});	
+		
 }
 
 function fromLogintoMenu(){
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#menupanel").css("display","block");
 		$("#menupanel").fadeIn(function(){
 			//
 		});	
+		
 	});	
+		
 }
 
 function toAssembly(){
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#assemblypanel").css("display","block");
 		$("#assemblypanel").fadeIn(function(){
 			//
 		});	
 	});	
+		
 }
 
 function toCouples(){
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#couplespanel").css("display","block");
 		$("#couplespanel").fadeIn(function(){
 			//
-		});	
+		});
 	});	
+			
 }
 
 
@@ -221,7 +229,7 @@ function toRitualWaitingRoom(){
 	
 	$("#joinritualbutton").css("display","none");
 
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#ritualwaitroompanel").css("display","block");
 		$("#ritualwaitroompanel").fadeIn(function(){
@@ -232,6 +240,7 @@ function toRitualWaitingRoom(){
 			waitingroomInterval = setInterval(refreshWaitingRoom,ritualdata.refreshtimems);
 		});	
 	});
+		
 }
 
 function refreshWaitingRoom(){ 
@@ -243,7 +252,7 @@ function refreshWaitingRoom(){
 		$.getJSON(
 			APIBaseUrl + "?cmd=inwaitingroom&userid=" + user.iduser + "&groupid=" + group.groupid + "&recentness=" + ritualdata.ritual.minutestoconsideronline,
 			function(data){
-				console.log(data);
+				//console.log(data);
 
 				if(data.error){
 					alert(data.error);
@@ -615,7 +624,7 @@ function startRitual(){
 				"day": day
 			},
 			function(data){
-				console.log(data);
+				//console.log(data);
 
 				dataforritual = data;
 
@@ -623,6 +632,7 @@ function startRitual(){
 					alert(data.error);
 				} else {
 					// if success: show menu
+					console.log(dataforritual);
 					visualize();
 				}
 				
@@ -674,11 +684,11 @@ function setupdatacollectionform(){
 						.attr("name",ritualdata.datatocollect[i].fieldid)
 						.attr("id",ritualdata.datatocollect[i].fieldid);
 
-				for(var j=0; j<ritualdata.datatocollect[i].options.length; j++){
+				for(var j=0; j<ritualdata.datatocollect[i].positions.length; j++){
 					fh	
 						.append("option")
-						.attr("value",ritualdata.datatocollect[i].options[j][0])
-						.text(ritualdata.datatocollect[i].options[j][0]);
+						.attr("value",ritualdata.datatocollect[i].positions[j][0])
+						.text(ritualdata.datatocollect[i].positions[j][0]);
 				}
 				
 
@@ -714,14 +724,116 @@ function setupdatacollectionform(){
 
 
 function visualize(){
+	//console.log("[visualize]");
 	//do visualization con variabile dataforritual
-	$(".panel , .panelcover").fadeOut(function(){
+	$(".panel , .panelcover").fadeOut().promise().done(function() {
 		$(".panel , .panelcover").css("display","none");
 		$("#ritualinterfacepanel").css("display","block");
 		$("#ritualinterfacepanel").fadeIn(function(){
-			//
-
-
+			viz();
 		});	
 	});
+		
+}
+
+
+var p5sketch = null;
+function viz(){
+	//console.log("[viz]");
+
+	$("#toMenu").css("display","none");
+
+	p5sketch = null;
+	p5sketch = new p5(( sketch ) => {
+
+	  let x = 100;
+	  let y = 100;
+	  var width = $("#vizpanel").width();
+	  var height = $("#vizpanel").height();
+
+	  var h = 0;
+	  var m = 0;
+	  var s = 0;
+
+	  var inc = 10;
+
+	  var ph = 0;
+	  var pm = 0;
+	  var ps = 0;
+
+	  var sounds = new Object();
+
+	  var minutebass = null;
+	  var hourbass = null;
+
+	  sketch.preload = () => {
+		  soundFormats('wav', 'mp3', 'ogg');
+
+		  minutebass = sketch.loadSound( ritualdata.ritual.minutebass );
+		  hourbass = sketch.loadSound( ritualdata.ritual.hourbass );
+
+		  for(var i = 0; i<ritualdata.datatocollect.length; i++){
+		  	if(ritualdata.datatocollect[i].positions){
+		  		for(var j = 0; j<ritualdata.datatocollect[i].positions.length; j++){
+		  			sounds[ ritualdata.datatocollect[i].positions[j][0]  ] = sketch.loadSound(  ritualdata.datatocollect[i].positions[j][1]  );
+		  		}
+		  	}	
+		  }
+		  
+
+		}
+	  
+	  sketch.setup = () => {
+
+	    var ca = sketch.createCanvas(width, height);
+	    ca.parent("vizpanel");
+	    sketch.frameRate(10);
+	  };
+
+	  sketch.draw = () => {
+	    sketch.background(255*sketch.random(),255*sketch.random(),255*sketch.random());
+
+	    s = s + inc;
+	    if(s>=60){
+	    	s = s - 60;
+	    	m = m + 1;
+
+	    	if(m>=60){
+	    		m = 0;
+	    		h = h + 1;
+	    		if(h>=24){
+
+	    			sketch.noLoop();
+
+	    			endRitual();
+
+	    		}
+	    	}
+	    }
+
+
+
+	   // se h-m-s della lista dei due set di dati è compresa tra ph-pm-ps e h-m-s 
+	   // suono il suono relativo
+	   // e disegno / coloro
+	   
+
+	   // ogni minuto : basso
+	   // ogni ora : bassone
+
+	    // at the end
+	    ph = h;
+	    pm = m;
+	    ps = s;
+
+	  };
+	});
+}
+
+
+function endRitual(){
+	$("#toMenu").css("display","block");
+	$("#vizpanel").html("");
+	// usare API per settare lo status finito
+	// andare all'assemblea
 }

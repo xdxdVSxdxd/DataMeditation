@@ -8,7 +8,9 @@
 		"endtime":	"24:00:00",
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.7,
-		"waitingforothers": "Let's wait until more people are here"
+		"waitingforothers": "Let's wait until more people are here",
+		"minutebass": "sounds/smallbass.wav",
+		"hourbass": "sounds/bigbass.wav"
 	},
 	"couplesmeet": {
 		"starttime": "00:00:00",

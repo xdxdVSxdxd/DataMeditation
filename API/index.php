@@ -212,7 +212,7 @@ function doInWaitingRoom($request,$conn){
 
 	// get all elements from today from access_to_ritual where status = 2 o 3, and mark them accordingly on status
 
-	$q2 = "SELECT iduser,status FROM access_to_ritual WHERE groupid = :groupid AND ( status = 2 OR status = 3  ) ";
+	$q2 = "SELECT iduser,status FROM access_to_ritual WHERE groupid = :groupid AND ( status = 2 OR status = 3  ) AND DATE(t) = CURDATE()";
 	$stmt2 = $conn->prepare($q2);
 	$stmt2->execute([':groupid' => $groupid  ] );
 
