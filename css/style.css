@@ -187,6 +187,26 @@ body,html{
 	overflow: scroll;
 }
 
+.maintitle{
+	font: bold 30px 'Helvetica Neue',Arial,sans-serif;
+	color: #FF0000;
+	text-shadow: #fff 0 0 10px;
+}
+
+.menulinktosite,.menulinktosite:visited{
+	font: 12px 'Helvetica Neue',Arial,sans-serif;
+	text-decoration: none;
+	color: #AAAAAA;	
+}
+
+.menulinktosite:hover{
+	text-decoration: underline;
+}
+
+.hero{
+	margin-bottom: 25px;
+}
+
 @media all and (max-width: 800px) {
 
 }

@@ -88,7 +88,7 @@ function refreshInterface(){
 		// console.log("[checkin to group]");
 		// sign in to group
 		$.getJSON(
-			APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + group.group,
+			APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + group.group + "&v=" + Math.random()*Math.random(),
 			function(data){
 				// console.log(data);
 
@@ -250,7 +250,7 @@ function refreshWaitingRoom(){
 	if(user!=null && group!=null){
 
 		$.getJSON(
-			APIBaseUrl + "?cmd=inwaitingroom&userid=" + user.iduser + "&groupid=" + group.groupid + "&recentness=" + ritualdata.ritual.minutestoconsideronline,
+			APIBaseUrl + "?cmd=inwaitingroom&userid=" + user.iduser + "&groupid=" + group.groupid + "&recentness=" + ritualdata.ritual.minutestoconsideronline + "&v=" + Math.random()*Math.random(),
 			function(data){
 				//console.log(data);
 
@@ -332,13 +332,13 @@ function doLogin(){
 	user = null;
 
 	$.getJSON(
-		APIBaseUrl + "?cmd=login&login=" + login + "&password=" + password + "&groupid=" + groupid,
+		APIBaseUrl + "?cmd=login&login=" + login + "&password=" + password + "&groupid=" + groupid + "&v=" + Math.random()*Math.random(),
 		function(data){
 			// console.log(data);
 			if(data.error){
 				if(confirm(data.error)){
 					$.getJSON(
-						APIBaseUrl + "?cmd=register&login=" + login + "&password=" + password + "&groupid=" + groupid,
+						APIBaseUrl + "?cmd=register&login=" + login + "&password=" + password + "&groupid=" + groupid + "&v=" + Math.random()*Math.random(),
 						function(data){
 							if(data.error){
 								alert(data.error);
@@ -355,7 +355,7 @@ function doLogin(){
 			if(user!=null){
 				// sign in to group
 				$.getJSON(
-					APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + groupid,
+					APIBaseUrl + "?cmd=togroup&iduser=" + user.iduser + "&groupid=" + groupid + "&v=" + Math.random()*Math.random(),
 					function(data){
 						// console.log(data);
 
@@ -382,7 +382,8 @@ function doCouples(){
 			{
 				"cmd": "getmycouple",
 				"userid": user.iduser,
-				"groupid": group.groupid
+				"groupid": group.groupid,
+				"v": Math.random()*Math.random()
 			},
 			function(data){
 				//console.log(data);
@@ -455,7 +456,8 @@ function doSendData(){
 				"day": day,
 				"hour": hour,
 				"minute": minute,
-				"second": second
+				"second": second,
+				"v": Math.random()*Math.random()
 			},
 			function(data){
 				// console.log(data);
@@ -621,7 +623,8 @@ function startRitual(){
 				"groupid": group.groupid,
 				"year": year,
 				"month": month,
-				"day": day
+				"day": day,
+				"v": Math.random()*Math.random()
 			},
 			function(data){
 				//console.log(data);
@@ -1059,7 +1062,8 @@ function endRitual(){
 			{
 				"cmd": "endritualstatus",
 				"userid": user.iduser,
-				"groupid": group.groupid
+				"groupid": group.groupid,
+				"v": Math.random()*Math.random()
 			},
 			function(data){
 				//console.log(data);
