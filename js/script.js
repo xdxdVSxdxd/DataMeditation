@@ -429,7 +429,7 @@ function doSendData(){
 		var result = new Object();
 		for(var i = 0; i<ritualdata.datatocollect.length; i++){
 			var name = ritualdata.datatocollect[i].fieldid;
-			var value = $("#datacollectionpanel [name='" + name + "']").val();
+			var value = $("#datacollectionpanel [name='" + name + "']:checked").val();
 			result[name] = value;
 		}
 
@@ -628,6 +628,18 @@ function startRitual(){
 
 				dataforritual = data;
 
+				dataforritual.theData.myData.forEach(function(d){
+					d.hour = +d.hour;
+					d.minute = +d.minute;
+					d.second = +d.second;
+				});
+
+				dataforritual.theData.theOthersData.forEach(function(d){
+					d.hour = +d.hour;
+					d.minute = +d.minute;
+					d.second = +d.second;
+				});
+
 				if(data.error){
 					alert(data.error);
 				} else {
@@ -755,7 +767,7 @@ function viz(){
 	  var m = 0;
 	  var s = 0;
 
-	  var inc = 10;
+	  var inc = 15;
 
 	  var ph = 0;
 	  var pm = 0;
@@ -765,17 +777,23 @@ function viz(){
 
 	  var minutebass = null;
 	  var hourbass = null;
+	  var atmo = null;
 
 	  sketch.preload = () => {
-		  soundFormats('wav', 'mp3', 'ogg');
+		  sketch.soundFormats('wav', 'mp3', 'ogg');
 
+		  
 		  minutebass = sketch.loadSound( ritualdata.ritual.minutebass );
 		  hourbass = sketch.loadSound( ritualdata.ritual.hourbass );
+		  atmo = sketch.loadSound( ritualdata.ritual.atmosphere );
 
+		  
 		  for(var i = 0; i<ritualdata.datatocollect.length; i++){
 		  	if(ritualdata.datatocollect[i].positions){
 		  		for(var j = 0; j<ritualdata.datatocollect[i].positions.length; j++){
-		  			sounds[ ritualdata.datatocollect[i].positions[j][0]  ] = sketch.loadSound(  ritualdata.datatocollect[i].positions[j][1]  );
+		  			var key = ritualdata.datatocollect[i].positions[j][0];
+		  			key = key.replace(/[\W_]+/g,"_");
+		  			sounds[  key ] = sketch.loadSound(  ritualdata.datatocollect[i].positions[j][1]  );
 		  		}
 		  	}	
 		  }
@@ -788,10 +806,17 @@ function viz(){
 	    var ca = sketch.createCanvas(width, height);
 	    ca.parent("vizpanel");
 	    sketch.frameRate(10);
+	    atmo.loop();
+	    sketch.fill(0,0,0);
+	    sketch.noStroke();
+	    sketch.rect(0,0,width,height);
 	  };
 
 	  sketch.draw = () => {
-	    sketch.background(255*sketch.random(),255*sketch.random(),255*sketch.random());
+	    //sketch.background(255*sketch.random(),255*sketch.random(),255*sketch.random());
+	    sketch.fill(0,0,0,10);
+	    sketch.noStroke();
+	    sketch.rect(0,0,width,height);
 
 	    s = s + inc;
 	    if(s>=60){
@@ -804,6 +829,7 @@ function viz(){
 	    		if(h>=24){
 
 	    			sketch.noLoop();
+	    			atmo.stop();
 
 	    			endRitual();
 
@@ -811,16 +837,209 @@ function viz(){
 	    	}
 	    }
 
+	    // var strtime = ph + ":" + pm + ":" + ps + " --> " + h + ":" + m + ":" + s;
+	    var strtime = (h<10?"0":"") + h + ":" + (m<10?"0":"") + m + ":" + (s<10?"0":"") + s;
+
+	    //console.log( ph + ":" + pm + ":" + ps + " -->" + h + ":" + m + ":" + s );
 
 
 	   // se h-m-s della lista dei due set di dati è compresa tra ph-pm-ps e h-m-s 
 	   // suono il suono relativo
 	   // e disegno / coloro
+
 	   
+	   var phdate = Date.parse("01/01/2011 " + ph  + ":" + pm + ":" + ps);
+	   var hdate = Date.parse("01/01/2011 " + h  + ":" + m + ":" + s);
+
+
+
+
+	   // my data
+
+	   var towrite = new Array();
+
+	   
+	   for(var i=0; i<dataforritual.theData.myData.length; i++){
+	   	//console.log(dataforritual.theData.myData[i]);
+	
+		var thedate = Date.parse("01/01/2011 " + dataforritual.theData.myData[i].hour  + ":" + dataforritual.theData.myData[i].minute + ":" + dataforritual.theData.myData[i].second);	   	
+
+	   	if(phdate<=thedate && hdate>=thedate){
+
+
+	   				//console.log("FOUND!");
+	   				// play draw
+	   				var jdata = JSON.parse(  dataforritual.theData.myData[i].jsonstring );
+
+	   				//console.log("jdata:");
+	   				//console.log(jdata);
+
+
+
+	   				for(var j = 0; j<ritualdata.datatocollect.length; j++){
+	   					var field = ritualdata.datatocollect[j].fieldid;
+	   					//console.log("-> field:");
+	   					//console.log(field);
+	   					if(typeof jdata[field] != 'undefined'){
+	   						var value = jdata[field];
+		   					//console.log(field + "-->" + value);
+
+		   					
+		   					if(value!="no answer"){
+		   						towrite.push(  field + "-->" + value  );
+
+		   						var key = value;
+				  				key = key.replace(/[\W_]+/g,"_");
+
+				  				//console.log("-> key:");
+	   							//console.log(key);
+
+	   							//console.log(sounds[key]);
+
+
+			   					if(sounds[key]){
+			   						sounds[key].pan(-1);
+			   						sounds[key].play();
+			   					}	
+		   					}	
+	   					}
+	   					
+	   				}
+
+
+	   	}
+	   }
+
+	   if(towrite.length>0){
+	   		sketch.fill(255,255,255);
+	   		sketch.noStroke();
+	   		sketch.rect(0,0,width/2,height);
+
+	   		var fheight = 25;
+	   		var margin = 5;
+	   		var starty = height/2 - towrite.length*(fheight+margin)/2;
+	   		sketch.fill(0,0,0);
+		   	sketch.textSize(fheight);
+			sketch.textAlign(sketch.LEFT,sketch.CENTER);
+			sketch.textFont('Helvetica');
+			for(var k = 0; k<towrite.length; k++){
+				sketch.text(towrite[k], margin, starty + k*(fheight+margin)  );	
+			}
+	   }
+
+	   // end  my data
+
+
+
+
+
+	   // the other's data
+
+	   towrite = new Array();
+
+	   for(var i=0; i<dataforritual.theData.theOthersData.length; i++){
+	   	//console.log(dataforritual.theData.myData[i]);
+	
+		var thedate = Date.parse("01/01/2011 " + dataforritual.theData.theOthersData[i].hour  + ":" + dataforritual.theData.theOthersData[i].minute + ":" + dataforritual.theData.theOthersData[i].second);	   	
+
+	   	if(phdate<=thedate && hdate>=thedate){
+
+
+	   				//console.log("FOUND!");
+	   				// play draw
+	   				var jdata = JSON.parse(  dataforritual.theData.theOthersData[i].jsonstring );
+
+	   				//console.log("jdata:");
+	   				//console.log(jdata);
+
+
+
+	   				for(var j = 0; j<ritualdata.datatocollect.length; j++){
+	   					var field = ritualdata.datatocollect[j].fieldid;
+	   					//console.log("-> field:");
+	   					//console.log(field);
+	   					if(typeof jdata[field] != 'undefined'){
+	   						var value = jdata[field];
+		   					//console.log(field + "-->" + value);
+
+		   					
+		   					if(value!="no answer"){
+		   						towrite.push(  field + "-->" + value  );
+
+		   						var key = value;
+				  				key = key.replace(/[\W_]+/g,"_");
+
+				  				//console.log("-> key:");
+	   							//console.log(key);
+
+	   							//console.log(sounds[key]);
+
+
+			   					if(sounds[key]){
+			   						sounds[key].pan(1);
+			   						sounds[key].play();
+			   					}	
+		   					}	
+	   					}
+	   					
+	   				}
+
+
+	   	}
+	   }
+
+	   if(towrite.length>0){
+	   		sketch.fill(255,255,255);
+	   		sketch.noStroke();
+	   		sketch.rect(width/2,0,width/2,height);
+
+	   		var fheight = 25;
+	   		var margin = 5;
+	   		var starty = height/2 - towrite.length*(fheight+margin)/2;
+	   		sketch.fill(0,0,0);
+		   	sketch.textSize(fheight);
+			sketch.textAlign(sketch.RIGHT,sketch.CENTER);
+			sketch.textFont('Helvetica');
+			for(var k = 0; k<towrite.length; k++){
+				sketch.text(towrite[k], width-margin, starty + k*(fheight+margin)  );	
+			}
+	   }
+
+	   // end  the other's data
+
+
+
+
+		sketch.fill(255,0,0);
+		sketch.textSize(56);
+		sketch.textAlign(sketch.CENTER,sketch.CENTER);
+		sketch.textFont('Helvetica');
+		sketch.text("YOU", width/4, height-30 );
+		sketch.text("YOUR OTHER", 3*width/4, height-30 );	
 
 	   // ogni minuto : basso
-	   // ogni ora : bassone
+	   if(s==0 && m%10==0){
+	   	minutebass.play();
+	   	sketch.fill(255,0,0);
+	   	sketch.noStroke();
+	   	var wwww = 30;
 
+	   	sketch.rect(width/2-wwww/2,0,wwww,height);
+	   }
+
+
+
+
+		// draw time
+		sketch.fill(0,0,0);
+		sketch.noStroke();
+		sketch.rect(width/2-150,0,300,30);
+		sketch.fill(255,255,255);
+		sketch.textSize(20);
+		sketch.textAlign(sketch.CENTER,sketch.CENTER);
+		sketch.textFont('Helvetica');
+		sketch.text(strtime, width/2, 15);
+		
 	    // at the end
 	    ph = h;
 	    pm = m;
@@ -835,5 +1054,25 @@ function endRitual(){
 	$("#toMenu").css("display","block");
 	$("#vizpanel").html("");
 	// usare API per settare lo status finito
+	$.getJSON(
+			APIBaseUrl,
+			{
+				"cmd": "endritualstatus",
+				"userid": user.iduser,
+				"groupid": group.groupid
+			},
+			function(data){
+				//console.log(data);
+
+				if(data.error){
+					alert(data.error);
+				} else {
+					// if success: show menu
+				}
+				
+			}
+		);
+
 	// andare all'assemblea
+	toAssembly();
 }

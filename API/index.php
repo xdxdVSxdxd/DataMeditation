@@ -329,6 +329,10 @@ function doListUsersInGroups($request,$conn){
 function doEndRitualStatus($request,$conn){
 	$result = new \stdClass();
 
+	$q2 = "UPDATE access_to_ritual SET status=3 WHERE userid=:userid AND groupid=:groupid";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] ]);
+
 	return $result;	
 }
 

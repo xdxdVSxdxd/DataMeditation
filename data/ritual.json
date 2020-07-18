@@ -9,8 +9,9 @@
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.7,
 		"waitingforothers": "Let's wait until more people are here",
-		"minutebass": "sounds/smallbass.wav",
-		"hourbass": "sounds/bigbass.wav"
+		"minutebass": "sounds/smallbass.mp3",
+		"hourbass": "sounds/bigbass.mp3",
+		"atmosphere": "sounds/atmo.mp3"
 	},
 	"couplesmeet": {
 		"starttime": "00:00:00",
@@ -29,19 +30,19 @@
 			"fieldid": "context",
 			"type": "switch",
 			"positions": [ 
-				["no answer","sounds/silence.waw"],
-				["I'm awake","sounds/awake.waw"] , 
-				["I'm going to sleep","sounds/sleep.waw"],
-				["I'm home","sounds/home.waw"],
-				["I'm in a place of culture","sounds/culture.waw"],
-				["I'm in a place for working","sounds/working.waw"],
-				["I'm in a place for consumption","sounds/consumption.waw"],
-				["I'm in a random place","sounds/random.waw"],
-				["I'm moving on foot","sounds/walking.waw"],
-				["I'm on a bycicle","sounds/bicycle.waw"],
-				["I'm on public transport","sounds/publictransport.waw"],
-				["I'm on another private vehicle","sounds/car.waw"],
-				["I'm using a car/bike/other sharing","sounds/sharing.waw"]
+				["no answer","sounds/silence.mp3"],
+				["I'm awake","sounds/awake.mp3"] , 
+				["I'm going to sleep","sounds/sleep.mp3"],
+				["I'm home","sounds/home.mp3"],
+				["I'm in a place of culture","sounds/culture.mp3"],
+				["I'm in a place for working","sounds/working.mp3"],
+				["I'm in a place for consumption","sounds/consumption.mp3"],
+				["I'm in a random place","sounds/random.mp3"],
+				["I'm moving on foot","sounds/walking.mp3"],
+				["I'm on a bycicle","sounds/bicycle.mp3"],
+				["I'm on public transport","sounds/publictransport.mp3"],
+				["I'm on another private vehicle","sounds/car.mp3"],
+				["I'm using a car/bike/other sharing","sounds/sharing.mp3"]
 			]
 		},
 		{
@@ -49,13 +50,13 @@
 			"fieldid": "interacting",
 			"type": "switch",
 			"positions": [
-				["no answer","sounds/silence.waw"],
-				["not interacting with anyone","sounds/notinteracting.waw"],
-				["I greeted a person","sounds/salute.waw"],
-				["I touched person","sounds/touched.waw"],
-				["we hug","sounds/hug.waw"],
-				["we kissed","sounds/kiss.waw"],
-				["we had sex","sounds/sex.waw"]
+				["no answer","sounds/silence.mp3"],
+				["not interacting with anyone","sounds/silence.mp3"],
+				["I greeted a person","sounds/salute.mp3"],
+				["I touched person","sounds/touched.mp3"],
+				["we hug","sounds/hug.mp3"],
+				["we kissed","sounds/kiss.mp3"],
+				["we had sex","sounds/sex.mp3"]
 			]
 		},
 		{
@@ -63,15 +64,15 @@
 			"fieldid": "emotion",
 			"type": "switch",
 			"positions": [
-				["no answer","sounds/silence.waw"],
-				["anger","sounds/anger.waw"],
-				["fear","sounds/fear.waw"],
-				["sadness","sounds/sadness.waw"],
-				["joy","sounds/joy.waw"],
-				["surprise","sounds/surprise.waw"],
-				["expectance","sounds/expectance.waw"],
-				["disgust","sounds/disgust.waw"],
-				["acceptance","sounds/acceptance.waw"]
+				["no answer","sounds/silence.mp3"],
+				["anger","sounds/anger.mp3"],
+				["fear","sounds/fear.mp3"],
+				["sadness","sounds/sadness.mp3"],
+				["joy","sounds/joy.mp3"],
+				["surprise","sounds/surprise.mp3"],
+				["expectance","sounds/expectance.mp3"],
+				["disgust","sounds/disgust.mp3"],
+				["acceptance","sounds/acceptance.mp3"]
 			]
 		},
 		{
@@ -79,15 +80,16 @@
 			"fieldid": "with",
 			"type": "switch",
 			"positions": [
-				["no answer","sounds/silence.waw"],
-				["alone","sounds/alone.waw"],
-				["with 1 person","sounds/1person.waw"],
-				["with a few people (around max 6)","sounds/fewpeople.waw"],
-				["in a crowd","sounds/crowd.waw"]
+				["no answer","sounds/silence.mp3"],
+				["alone","sounds/silence.mp3"],
+				["with 1 person","sounds/1person.mp3"],
+				["with a few people (around max 6)","sounds/fewpeople.mp3"],
+				["in a crowd","sounds/crowd.mp3"]
 			]
 		},
 		{
 			"label": "note",
+			"fieldid": "note",
 			"type": "text"
 		}
 
