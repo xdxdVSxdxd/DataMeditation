@@ -782,6 +782,10 @@ function viz(){
 	  var hourbass = null;
 	  var atmo = null;
 
+
+	  var towriteme = null;
+	  var towriteother = null;
+
 	  sketch.preload = () => {
 		  sketch.soundFormats('wav', 'mp3', 'ogg');
 
@@ -914,20 +918,13 @@ function viz(){
 	   }
 
 	   if(towrite.length>0){
+
+	   		towriteme = towrite;
+
 	   		sketch.fill(255,255,255);
 	   		sketch.noStroke();
 	   		sketch.rect(0,0,width/2,height);
 
-	   		var fheight = 25;
-	   		var margin = 5;
-	   		var starty = height/2 - towrite.length*(fheight+margin)/2;
-	   		sketch.fill(0,0,0);
-		   	sketch.textSize(fheight);
-			sketch.textAlign(sketch.LEFT,sketch.CENTER);
-			sketch.textFont('Helvetica');
-			for(var k = 0; k<towrite.length; k++){
-				sketch.text(towrite[k], margin, starty + k*(fheight+margin)  );	
-			}
 	   }
 
 	   // end  my data
@@ -996,20 +993,44 @@ function viz(){
 	   		sketch.noStroke();
 	   		sketch.rect(width/2,0,width/2,height);
 
-	   		var fheight = 25;
-	   		var margin = 5;
-	   		var starty = height/2 - towrite.length*(fheight+margin)/2;
-	   		sketch.fill(0,0,0);
-		   	sketch.textSize(fheight);
-			sketch.textAlign(sketch.RIGHT,sketch.CENTER);
-			sketch.textFont('Helvetica');
-			for(var k = 0; k<towrite.length; k++){
-				sketch.text(towrite[k], width-margin, starty + k*(fheight+margin)  );	
-			}
+	   		towriteother = towrite;
+
 	   }
 
 	   // end  the other's data
 
+
+
+if(towriteme!=null){
+
+			var fheight = 25;
+	   		var margin = 5;
+	   		var starty = height/2 - towriteme.length*(fheight+margin)/2;
+	   		sketch.fill(255,0,0);
+		   	sketch.textSize(fheight);
+			sketch.textAlign(sketch.LEFT,sketch.CENTER);
+			sketch.textFont('towriteme');
+			for(var k = 0; k<towrite.length; k++){
+				sketch.text(towriteme[k], margin, starty + k*(fheight+margin)  );	
+			}
+
+}
+
+
+if(towriteother!=null){
+
+			var fheight = 25;
+	   		var margin = 5;
+	   		var starty = height/2 - towriteother.length*(fheight+margin)/2;
+	   		sketch.fill(255,0,0);
+		   	sketch.textSize(fheight);
+			sketch.textAlign(sketch.RIGHT,sketch.CENTER);
+			sketch.textFont('Helvetica');
+			for(var k = 0; k<towriteother.length; k++){
+				sketch.text(towriteother[k], width-margin, starty + k*(fheight+margin)  );	
+			}
+
+}
 
 
 
