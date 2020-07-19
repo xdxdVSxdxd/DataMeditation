@@ -103,6 +103,7 @@ body,html{
 	animation: hton 1s;
 	font: 18px 'Helvetica Neue',sans-serif;
 	border: 0px;
+	display: none;
 }
 
 .menuitem:hover{
