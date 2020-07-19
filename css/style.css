@@ -22,6 +22,7 @@ body,html{
 	height: calc(100% - 60px - 40px);
 	margin: 0px;
 	padding: 20px;
+	overflow: scroll;
 }
 
 .panelcover{
