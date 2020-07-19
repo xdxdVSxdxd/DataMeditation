@@ -41,7 +41,7 @@ function setTiming(){
 function refreshInterface(){
 	//console.log("[refreshInterface]");
 	// set status variables according to cureent time / date
-	var currentdate = new Date();
+	var currentdate = luxon.DateTime.local().setZone(ritualdata.referencetimezone).toJSDate();
 	if( checkifitstime(currentdate,ritualdata.ritual.starttime,ritualdata.ritual.endtime) ){
 		isritualtime = true;
 	} else {
@@ -528,7 +528,16 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	//console.log("endTime:" + endTime);
 	//console.log("ofDay:" + ofDay);
 
-	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + ritualdata.referencetimezone ) );
+	// luxon.DateTime.local().setZone(ritualdata.referencetimezone).toJSDate()
+
+	var sign = "GMT+" + ritualdata.referencetimezone;
+	if(ritualdata.referencetimezone<0){
+		sign = "GMT" + ritualdata.referencetimezone;
+	} else if (ritualdata.referencetimezone==0){
+		sign = "GMT";
+	}
+
+	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + sign ) );
 
 	//console.log("......");
 	//console.log("thatDate:" + thatDate);
