@@ -92,6 +92,10 @@ body,html{
 	text-decoration: none;
 }
 
+#gotologin, #gotodata, #gotoritualwaitroom, #gotocouples, #gotoassembly{
+	display: none;
+}
+
 .menuitem{
 	margin: 10px;
 	padding: 20px;
@@ -103,7 +107,6 @@ body,html{
 	animation: hton 1s;
 	font: 18px 'Helvetica Neue',sans-serif;
 	border: 0px;
-	display: none;
 }
 
 .menuitem:hover{
