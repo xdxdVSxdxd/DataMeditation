@@ -482,17 +482,17 @@ function doSendData(){
 
 function checkifitstime(currentDate,startTime,endTime){
 
-	//console.log("----------------");
-	//console.log("[checkifitstime]");
+	console.log("----------------");
+	console.log("[checkifitstime]");
 
-	//console.log("currentDate:");
-	//console.log(currentDate);
+	console.log("currentDate:");
+	console.log(currentDate);
 
-	//console.log("startTime:");
-	//console.log(startTime);
+	console.log("startTime:");
+	console.log(startTime);
 
-	//console.log("endTime:");
-	//console.log(endTime);
+	console.log("endTime:");
+	console.log(endTime);
 
 
 	startDate = new Date(currentDate.getTime());
@@ -506,15 +506,15 @@ function checkifitstime(currentDate,startTime,endTime){
 	endDate.setSeconds(endTime.split(":")[2]);
 
 
-	// console.log("startDate:");
-	// console.log(startDate);
+	console.log("startDate:");
+	console.log(startDate);
 
-	// console.log("endDate:");
-	// console.log(endDate);
+	console.log("endDate:");
+	console.log(endDate);
 
 
-	// console.log("result:");
-	// console.log( (startDate < currentDate && endDate > currentDate)  );
+	console.log("result:");
+	console.log( (startDate < currentDate && endDate > currentDate)  );
 
 	valid = startDate < currentDate && endDate > currentDate
 	return valid;
