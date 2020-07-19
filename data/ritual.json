@@ -4,8 +4,8 @@
 	"finalday": "19 Jul 2020",
 	"referencetimezone": 2,
 	"ritual": {
-		"starttime": "19:00:00",
-		"endtime":	"20:00:00",
+		"starttime": "18:00:00",
+		"endtime":	"19:00:00",
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.7,
 		"waitingforothers": "Let's wait until more people are here",
