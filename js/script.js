@@ -556,9 +556,9 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	endDate.setSeconds(endTime.split(":")[2]);
 
 
-	console.log("......");
-	console.log("startDate:" + startDate);
-	console.log("endDate:" + endDate);
+	//console.log("......");
+	//console.log("startDate:" + startDate);
+	//console.log("endDate:" + endDate);
 
 	valid = startDate < currentDate && endDate > currentDate
 	return valid;
@@ -807,6 +807,11 @@ function viz(){
 	  var towriteme = null;
 	  var towriteother = null;
 
+	  var startdatetime = null;
+	  var enddatetime = null;
+	  var st = null;
+	  var et = null;
+
 	  sketch.preload = () => {
 		  sketch.soundFormats('wav', 'mp3', 'ogg');
 
@@ -839,9 +844,10 @@ function viz(){
 	    sketch.noStroke();
 	    sketch.rect(0,0,width,height);
 
-	    var d = luxon.DateTime.fromISO(ritualdata.ritual.starttime).minus({day: 1});
-		var h = d.hour;
-
+	    startdatetime = luxon.DateTime.fromISO(ritualdata.ritual.starttime).minus({day: 1});
+	    enddatetime = luxon.DateTime.fromISO(ritualdata.ritual.starttime);
+	    st = startdatetime;
+		
 	  };
 
 	  sketch.draw = () => {
@@ -850,27 +856,20 @@ function viz(){
 	    sketch.noStroke();
 	    sketch.rect(0,0,width,height);
 
-	    s = s + inc;
-	    if(s>=60){
-	    	s = s - 60;
-	    	m = m + 1;
 
-	    	if(m>=60){
-	    		m = 0;
-	    		h = h + 1;
-	    		if(h>=24){
+	    et = st.plus({seconds: inc });
 
+
+	    if(et.diff(enddatetime).valueOf()>0){
 	    			sketch.noLoop();
 	    			atmo.stop();
-
-	    			endRitual();
-
-	    		}
-	    	}
+					endRitual();
 	    }
 
+	    
+
 	    // var strtime = ph + ":" + pm + ":" + ps + " --> " + h + ":" + m + ":" + s;
-	    var strtime = (h<10?"0":"") + h + ":" + (m<10?"0":"") + m + ":" + (s<10?"0":"") + s;
+	    var strtime = st.toFormat("yyyy-MM-dd HH:mm:ss");//(h<10?"0":"") + h + ":" + (m<10?"0":"") + m + ":" + (s<10?"0":"") + s;
 
 	    //console.log( ph + ":" + pm + ":" + ps + " -->" + h + ":" + m + ":" + s );
 
@@ -880,8 +879,8 @@ function viz(){
 	   // e disegno / coloro
 
 	   
-	   var phdate = Date.parse("01/01/2011 " + ph  + ":" + pm + ":" + ps);
-	   var hdate = Date.parse("01/01/2011 " + h  + ":" + m + ":" + s);
+	   // var phdate = Date.parse("01/01/2011 " + ph  + ":" + pm + ":" + ps);
+	   // var hdate = Date.parse("01/01/2011 " + h  + ":" + m + ":" + s);
 
 
 
@@ -894,9 +893,10 @@ function viz(){
 	   for(var i=0; i<dataforritual.theData.myData.length; i++){
 	   	//console.log(dataforritual.theData.myData[i]);
 	
-		var thedate = Date.parse("01/01/2011 " + dataforritual.theData.myData[i].hour  + ":" + dataforritual.theData.myData[i].minute + ":" + dataforritual.theData.myData[i].second);	   	
+		var theDate = luxon.DateTime.fromFormat("yyyy-MM-dd HH:mm:ss",dataforritual.theData.myData[i].timestamp);//Date.parse("01/01/2011 " + dataforritual.theData.myData[i].hour  + ":" + dataforritual.theData.myData[i].minute + ":" + dataforritual.theData.myData[i].second);	   	
 
-	   	if(phdate<=thedate && hdate>=thedate){
+	   	//if(phdate<=thedate && hdate>=thedate){
+	   	if( st.diff(theDate).valueOf()<0 && et.diff(theDate).valueOf()>0  ){
 
 
 	   				//console.log("FOUND!");
@@ -965,9 +965,10 @@ function viz(){
 	   for(var i=0; i<dataforritual.theData.theOthersData.length; i++){
 	   	//console.log(dataforritual.theData.myData[i]);
 	
-		var thedate = Date.parse("01/01/2011 " + dataforritual.theData.theOthersData[i].hour  + ":" + dataforritual.theData.theOthersData[i].minute + ":" + dataforritual.theData.theOthersData[i].second);	   	
+		//var thedate = Date.parse("01/01/2011 " + dataforritual.theData.theOthersData[i].hour  + ":" + dataforritual.theData.theOthersData[i].minute + ":" + dataforritual.theData.theOthersData[i].second);	   	
+		var theDate = luxon.DateTime.fromFormat("yyyy-MM-dd HH:mm:ss",dataforritual.theData.theOthersData[i].timestamp);
 
-	   	if(phdate<=thedate && hdate>=thedate){
+	   	if( st.diff(theDate).valueOf()<0 && et.diff(theDate).valueOf()>0  ){
 
 
 	   				//console.log("FOUND!");
@@ -1067,7 +1068,7 @@ if(towriteother!=null){
 		sketch.text("YOUR OTHER", 3*width/4, height-30 );	
 
 	   // ogni minuto : basso
-	   if(s==0 && m%10==0){
+	   if(st.minute%10==0){
 	   	minutebass.play();
 	   	sketch.fill(255,0,0);
 	   	sketch.noStroke();
@@ -1093,6 +1094,8 @@ if(towriteother!=null){
 	    ph = h;
 	    pm = m;
 	    ps = s;
+
+	    st = et;
 
 	  };
 	});
