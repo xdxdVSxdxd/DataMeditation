@@ -41,7 +41,7 @@ function setTiming(){
 function refreshInterface(){
 	//console.log("[refreshInterface]");
 	// set status variables according to cureent time / date
-	var currentdate = luxon.DateTime.local().setZone(ritualdata.referencetimezone).toJSDate();
+	var currentdate = Date.parse( luxon.DateTime.local().setZone(ritualdata.referencetimezone).toFormat	("yyyy-MM-dd HH:mm:ss") );
 	if( checkifitstime(currentdate,ritualdata.ritual.starttime,ritualdata.ritual.endtime) ){
 		isritualtime = true;
 	} else {

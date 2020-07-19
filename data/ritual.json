@@ -2,10 +2,10 @@
 	"refreshtimems": 5000,
 	"assemblyjitsymeet": "https://meet.jit.si/DataRitualAssemblyJuly2020",
 	"finalday": "19 Jul 2020",
-	"referencetimezone": 2,
+	"referencetimezone": "UTC+2",
 	"ritual": {
-		"starttime": "19:00:00",
-		"endtime":	"21:00:00",
+		"starttime": "21:00:00",
+		"endtime":	"22:00:00",
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.7,
 		"waitingforothers": "Let's wait until more people are here",
