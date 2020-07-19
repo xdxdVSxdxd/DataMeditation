@@ -135,7 +135,7 @@ function doSigninToGroup($request,$conn){
 function doStoreData($request,$conn){
 	$result = new \stdClass();
 
-	$todaysdate = strtotime($request["year"] . "-" . $request["month"] . "-" . $request["day"] . " " . $request["hour"] . ":" . $request["minute"] . ":" . $request["second"]);
+	$todaysdate = $request["year"] . "-" . $request["month"] . "-" . $request["day"] . " " . $request["hour"] . ":" . $request["minute"] . ":" . $request["second"];
 	$yesterdaysdate = strtotime("yesterday");
 
 
