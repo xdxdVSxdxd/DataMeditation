@@ -471,6 +471,7 @@ function doSendData(){
 					$(".datacollectionform input[type=radio]").prop("checked",false);
 					$(".datacollectionform input[type=checkbox]").prop("checked",false);
 					$(".datacollectionform select option:selected").prop("selected",false);
+					$(".datacollectionform input[type=text]").val("");
 				}
 				
 			}
