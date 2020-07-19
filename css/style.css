@@ -92,7 +92,7 @@ body,html{
 	text-decoration: none;
 }
 
-#gotologin, #gotodata, #gotoritualwaitroom, #gotocouples, #gotoassembly{
+#gotoritualwaitroom, #gotocouples, #gotoassembly{
 	display: none;
 }
 
