@@ -1009,8 +1009,8 @@ if(towriteme!=null){
 	   		sketch.fill(255,0,0);
 		   	sketch.textSize(fheight);
 			sketch.textAlign(sketch.LEFT,sketch.CENTER);
-			sketch.textFont('towriteme');
-			for(var k = 0; k<towrite.length; k++){
+			sketch.textFont('Helvetica');
+			for(var k = 0; k<towriteme.length; k++){
 				sketch.text(towriteme[k], margin, starty + k*(fheight+margin)  );	
 			}
 
