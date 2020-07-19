@@ -305,11 +305,8 @@ function doGetMyCoupleDataForRitual($request,$conn){
 	}
 	$stmt2->closeCursor();
 
-	echo("fromdate:" . $fromdate);
-	echo("todate:" . $todate);
-
 	// pescare i dati
-	$q2 = "SELECT jsonstring,`timestamp`,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND ( userid = :iduser  OR  userid = :otherid ) AND `timestamp` >= :fromdate AND `timestamp` <= :todate ORDER BY `timestamp` ASC";
+	$q2 = "SELECT jsonstring,timestamp,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND ( userid = :iduser  OR  userid = :otherid ) AND `timestamp` >= :fromdate AND `timestamp` <= :todate ORDER BY `timestamp` ASC";
 	$stmt2 = $conn->prepare($q2);
 	$stmt2->execute([':groupid' => $groupid  ,   ':iduser' => $userid  ,   ':otherid' => $theotherid ,  ':fromdate' => $fromdate   ,  ':todate' => $todate  ] );
 	$theData = new \stdClass();
@@ -320,6 +317,7 @@ function doGetMyCoupleDataForRitual($request,$conn){
 		$o->jsonstring = $r1["jsonstring"];
 		$o->userid = $r1["userid"];
 		$o->hour = $r1["hour"];
+		$o->timestamp = $r1["timestamp"];
 		$o->minute = $r1["minute"];
 		$o->second = $r1["second"];
 		if($o->userid==$userid){
