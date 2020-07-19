@@ -467,6 +467,10 @@ function doSendData(){
 				} else {
 					// if success: show menu
 					alert("Data shared!");
+
+					$(".datacollectionform input[type=radio]").prop("checked",false);
+					$(".datacollectionform input[type=checkbox]").prop("checked",false);
+					$(".datacollectionform select option:selected").prop("selected",false);
 				}
 				
 			}
@@ -675,14 +679,19 @@ function setupdatacollectionform(){
 						.attr("class","fieldholder");
 
 				for(var j=0; j<ritualdata.datatocollect[i].positions.length; j++){
-					fh	
+
+					var fhh = fh
+						.append("div")
+						.attr("class","singlefield");
+
+					fhh	
 						.append("input")
 						.attr("type","radio")
 						.attr("name",ritualdata.datatocollect[i].fieldid)	
 						.attr("id",ritualdata.datatocollect[i].fieldid + j)
 						.attr("value",ritualdata.datatocollect[i].positions[j][0]);
 
-					fh
+					fhh
 						.append("label")
 						.attr("for", ritualdata.datatocollect[i].fieldid + j)
 						.text(ritualdata.datatocollect[i].positions[j][0]);
@@ -691,7 +700,6 @@ function setupdatacollectionform(){
 
 			} else if( ritualdata.datatocollect[i].type=="select" ){
 				
-
 				var fh = fieldcontainer
 						.append("div")
 						.attr("class","fieldholder")
