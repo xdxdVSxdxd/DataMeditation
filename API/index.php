@@ -135,9 +135,13 @@ function doSigninToGroup($request,$conn){
 function doStoreData($request,$conn){
 	$result = new \stdClass();
 
-	$q = "INSERT INTO jsondata(userid,groupid,timestamp,jsonstring,year,month,day,hour,minute,second) VALUES(:userid,:groupid, NOW(), :data , :year , :month , :day , :hour , :minute, :second )";
+	$todaysdate = strtotime($request["year"] . "-" . $request["month"] . "-" . $request["day"] . " " . $request["hour"] . ":" . $request["minute"] . ":" . $request["second"]);
+	$yesterdaysdate = strtotime("yesterday");
+
+
+	$q = "INSERT INTO jsondata(userid,groupid,timestamp,jsonstring,year,month,day,hour,minute,second) VALUES(:userid,:groupid, :datetime , :data , :year , :month , :day , :hour , :minute, :second )";
 	$stmt = $conn->prepare($q);
-	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] , ":data" => $request["jsondata"]   ,  ":year" => $request["year"] , ":month" => $request["month"] , ":day" => $request["day"] , ":hour" => $request["hour"] , ":minute" => $request["minute"] , ":second" => $request["second"] ] );
+	$stmt->execute([':userid' => $request["userid"] , ':groupid' => $request["groupid"] ,  ":datetime" => $todaysdate  ,  ":data" => $request["jsondata"]   ,  ":year" => $request["year"] , ":month" => $request["month"] , ":day" => $request["day"] , ":hour" => $request["hour"] , ":minute" => $request["minute"] , ":second" => $request["second"] ] );
 
 	return $result;	
 }
@@ -267,12 +271,21 @@ function doGetMyCoupleDataForRitual($request,$conn){
 	$userid = $request["userid"];
 	$groupid = $request["groupid"];
 
-	$year = $request["year"];
-	$month = $request["month"];
-	$day = $request["day"];
+	$todaysdate = strtotime("today");
+	$yesterdaysdate = strtotime("yesterday");
 
-	$fromdate = $year . '-' . $month . '-' . $day . ' 00:00:01';
-	$todate = $year . '-' . $month . '-' . $day . ' 23:59:59';
+	$y1 = date("Y", $yesterdaysdate);
+	$m1 = date("m", $yesterdaysdate);
+	$d1 = date("d", $yesterdaysdate);
+
+	$y2 = date("Y", $todaysdate);
+	$m2 = date("m", $todaysdate);
+	$d2 = date("d", $todaysdate);
+
+	$starttime = $request["starttime"];
+
+	$fromdate = $y1 . '-' . $m1 . '-' . $d1 . ' ' . $starttime;
+	$todate = $y2 . '-' . $m2 . '-' . $d2 . ' ' . $starttime;
 
 	$q2 = "UPDATE access_to_ritual SET status=2 , t = NOW() WHERE iduser = :userid AND groupid = :groupid";
 	$stmt2 = $conn->prepare($q2);
@@ -293,9 +306,9 @@ function doGetMyCoupleDataForRitual($request,$conn){
 	$stmt2->closeCursor();
 
 	// pescare i dati
-	$q2 = "SELECT jsonstring,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND ( userid = :iduser  OR  userid = :otherid ) AND year = :year AND month = :month AND day = :day ORDER BY hour ASC, minute ASC, second ASC";
+	$q2 = "SELECT jsonstring,`timestamp`,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid AND ( userid = :iduser  OR  userid = :otherid ) AND `timestamp` >= :fromdate AND `timestamp` <= :todate ORDER BY `timestamp` ASC";
 	$stmt2 = $conn->prepare($q2);
-	$stmt2->execute([':groupid' => $groupid  ,   ':iduser' => $userid  ,   ':otherid' => $theotherid ,  ':year' => $year   ,  ':month' => $month   ,  ':day' => $day  ] );
+	$stmt2->execute([':groupid' => $groupid  ,   ':iduser' => $userid  ,   ':otherid' => $theotherid ,  ':fromdate' => $fromdate   ,  ':todate' => $todate  ] );
 	$theData = new \stdClass();
 	$theData->myData = array();
 	$theData->theOthersData = array();

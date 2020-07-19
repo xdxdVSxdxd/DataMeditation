@@ -638,6 +638,7 @@ function startRitual(){
 				"year": year,
 				"month": month,
 				"day": day,
+				"starttime": ritualdata.ritual.starttime,
 				"v": Math.random()*Math.random()
 			},
 			function(data){
@@ -835,6 +836,10 @@ function viz(){
 	    sketch.fill(0,0,0);
 	    sketch.noStroke();
 	    sketch.rect(0,0,width,height);
+
+	    var d = luxon.DateTime.fromISO(ritualdata.ritual.starttime).minus({day: 1});
+		var h = d.hour;
+
 	  };
 
 	  sketch.draw = () => {
