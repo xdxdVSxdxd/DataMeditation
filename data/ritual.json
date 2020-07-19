@@ -84,6 +84,7 @@
 				["alone","sounds/silence.mp3"],
 				["with 1 person","sounds/1person.mp3"],
 				["with a few people (around max 6)","sounds/fewpeople.mp3"],
+				["with around 7-15 people","sounds/fewpeople.mp3"],
 				["in a crowd","sounds/crowd.mp3"]
 			]
 		},
