@@ -21,6 +21,10 @@ $(document).ready(function () {
 	$.getJSON("data/ritual.json?v=" + Math.random()*Math.random() ,function(data){
 
 		ritualdata = data;
+
+
+		//luxon.Settings.defaultZoneName = ritualdata.referencetimezone;
+
 		setupmenuitems();
 		setupdatacollectionform();
 		start();
@@ -41,7 +45,13 @@ function setTiming(){
 function refreshInterface(){
 	//console.log("[refreshInterface]");
 	// set status variables according to cureent time / date
-	var currentdate = new Date( luxon.DateTime.local().setZone(ritualdata.referencetimezone).toFormat("yyyy-MM-dd HH:mm:ss") );
+	var cd = luxon.DateTime.local().setZone(ritualdata.referencetimezone);
+	
+	var currentdate = new Date( cd.toFormat("yyyy-MM-dd HH:mm:ss") );
+
+	//console.log(currentdate);
+
+
 	if( checkifitstime(currentdate,ritualdata.ritual.starttime,ritualdata.ritual.endtime) ){
 		isritualtime = true;
 	} else {
