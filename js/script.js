@@ -531,14 +531,16 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 
 	// luxon.DateTime.local().setZone(ritualdata.referencetimezone).toJSDate()
 
+	/*
 	var sign = "GMT+" + ritualdata.referencetimezone;
 	if(ritualdata.referencetimezone<0){
 		sign = "GMT" + ritualdata.referencetimezone;
 	} else if (ritualdata.referencetimezone==0){
 		sign = "GMT";
 	}
+	*/
 
-	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + sign ) );
+	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + ritualdata.referencetimezone ) );
 
 	//console.log("......");
 	//console.log("thatDate:" + thatDate);
@@ -554,9 +556,9 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	endDate.setSeconds(endTime.split(":")[2]);
 
 
-	//console.log("......");
-	//console.log("startDate:" + startDate);
-	//console.log("endDate:" + endDate);
+	console.log("......");
+	console.log("startDate:" + startDate);
+	console.log("endDate:" + endDate);
 
 	valid = startDate < currentDate && endDate > currentDate
 	return valid;

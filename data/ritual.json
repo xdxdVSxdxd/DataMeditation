@@ -14,14 +14,14 @@
 		"atmosphere": "sounds/atmo.mp3"
 	},
 	"couplesmeet": {
-		"starttime": "18:30:00",
-		"endtime": "19:30:00"
+		"starttime": "21:00:00",
+		"endtime": "22:00:00"
 	},
 	"assembly": {
-		"eachdaystarttime": "19:00:00",
-		"eachdayendtime": "20:00:00",
-		"finaldaystarttime": "19:00:00",
-		"finaldayendtime": "21:00:00"
+		"eachdaystarttime": "21:00:00",
+		"eachdayendtime": "22:00:00",
+		"finaldaystarttime": "21:00:00",
+		"finaldayendtime": "22:00:00"
 	},
 	"datatocollect": [
 
