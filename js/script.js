@@ -505,29 +505,38 @@ function checkifitstime(currentDate,startTime,endTime){
 	//console.log("endTime:");
 	//console.log(endTime);
 
+	var cd = luxon.DateTime.utc();
 
-	startDate = new Date(currentDate.getTime());
-	startDate.setHours(startTime.split(":")[0]);
-	startDate.setMinutes(startTime.split(":")[1]);
-	startDate.setSeconds(startTime.split(":")[2]);
+	var sd = luxon.DateTime.utc(cd.year,cd.month,cd.day,parseInt(startTime.split(":")[0]) , parseInt(startTime.split(":")[1]) , parseInt(startTime.split(":")[2]) );
+	var ed = luxon.DateTime.utc(cd.year,cd.month,cd.day,parseInt(endTime.split(":")[0]) , parseInt(endTime.split(":")[1]) , parseInt(endTime.split(":")[2]) );
 
-	endDate = new Date(currentDate.getTime());
-	endDate.setHours(endTime.split(":")[0]);
-	endDate.setMinutes(endTime.split(":")[1]);
-	endDate.setSeconds(endTime.split(":")[2]);
+
+	//startDate = new Date(currentDate.getTime());
+	//startDate.setHours(startTime.split(":")[0]);
+	//startDate.setMinutes(startTime.split(":")[1]);
+	//startDate.setSeconds(startTime.split(":")[2]);
+
+	//endDate = new Date(currentDate.getTime());
+	//endDate.setHours(endTime.split(":")[0]);
+	//endDate.setMinutes(endTime.split(":")[1]);
+	//endDate.setSeconds(endTime.split(":")[2]);
+
+	//console.log(cd.toString());
+	//console.log(sd.toString());
+	//console.log(ed.toString());
 
 
 	//console.log("startDate:");
 	//console.log(startDate);
 
 	//console.log("endDate:");
-	//console.log(endDate);
+	////console.log(endDate);
 
 
 	//console.log("result:");
-	//console.log( (startDate < currentDate && endDate > currentDate)  );
+	//console.log( (cd.diff(sd).valueOf()>0) &&  (cd.diff(ed).valueOf()<0)  );
 
-	valid = startDate < currentDate && endDate > currentDate
+	valid =  (cd.diff(sd).valueOf()>0) &&  (cd.diff(ed).valueOf()<0);  //startDate < currentDate && endDate > currentDate
 	return valid;
 }
 
@@ -550,11 +559,21 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	}
 	*/
 
-	thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + ritualdata.referencetimezone ) );
+
+	var ccd = luxon.DateTime.utc(parseInt(ofDay.split("-")[0]) , parseInt(ofDay.split("-")[1]) , parseInt(ofDay.split("-")[2]));
+
+	var cd = luxon.DateTime.utc();
+
+	var sd = luxon.DateTime.utc(ccd.year,ccd.month,ccd.day,parseInt(startTime.split(":")[0]) , parseInt(startTime.split(":")[1]) , parseInt(startTime.split(":")[2]) );
+	var ed = luxon.DateTime.utc(ccd.year,ccd.month,ccd.day,parseInt(endTime.split(":")[0]) , parseInt(endTime.split(":")[1]) , parseInt(endTime.split(":")[2]) );
+
+
+	//thatDate = new Date( Date.parse(ofDay + " 00:00:00 " + ritualdata.referencetimezone ) );
 
 	//console.log("......");
 	//console.log("thatDate:" + thatDate);
 
+	/*
 	startDate = new Date(thatDate.getTime());
 	startDate.setHours(startTime.split(":")[0]);
 	startDate.setMinutes(startTime.split(":")[1]);
@@ -564,13 +583,21 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 	endDate.setHours(endTime.split(":")[0]);
 	endDate.setMinutes(endTime.split(":")[1]);
 	endDate.setSeconds(endTime.split(":")[2]);
-
+	*/
 
 	//console.log("......");
 	//console.log("startDate:" + startDate);
 	//console.log("endDate:" + endDate);
 
-	valid = startDate < currentDate && endDate > currentDate
+	/*
+	console.log(cd.toString());
+	console.log(sd.toString());
+	console.log(ed.toString());
+
+	console.log(  ((cd.diff(sd).valueOf()>0) &&  (cd.diff(ed).valueOf()<0))  );
+	*/
+	
+	valid =  (cd.diff(sd).valueOf()>0) &&  (cd.diff(ed).valueOf()<0);
 	return valid;
 }
 
