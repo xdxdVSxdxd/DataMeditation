@@ -450,9 +450,9 @@ function doSendData(){
 		var year = cd.getUTCFullYear();
 		var month = cd.getUTCMonth() + 1;
 		var day = cd.getUTCDate();
-		var hour = cd.getHours();
-		var minute = cd.getMinutes();
-		var second = cd.getSeconds();
+		var hour = cd.getUTCHours();
+		var minute = cd.getUTCMinutes();
+		var second = cd.getUTCSeconds();
 
 		$.getJSON(
 			APIBaseUrl,
@@ -596,7 +596,7 @@ function checkifitsdatetime(currentDate,startTime,endTime,ofDay){
 
 	console.log(  ((cd.diff(sd).valueOf()>0) &&  (cd.diff(ed).valueOf()<0))  );
 	*/
-	
+
 	valid =  (cd.diff(sd).valueOf()>0) &&  (cd.diff(ed).valueOf()<0);
 	return valid;
 }
