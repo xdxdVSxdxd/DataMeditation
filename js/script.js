@@ -1125,7 +1125,7 @@ if(towriteother!=null){
 		sketch.textSize(20);
 		sketch.textAlign(sketch.CENTER,sketch.CENTER);
 		sketch.textFont('Helvetica');
-		sketch.text(strtime, width/2, 15);
+		sketch.text(strtime + " " + ritualdata.referencetimezone, width/2, 15);
 		
 	    // at the end
 	    ph = h;
