@@ -1,11 +1,11 @@
 {
 	"refreshtimems": 5000,
 	"assemblyjitsymeet": "https://meet.jit.si/DataRitualAssemblyJuly2020",
-	"finalday": "2020-07-20",
+	"finalday": "2020-07-24",
 	"referencetimezone": "UTC",
 	"ritual": {
-		"starttime": "05:00:00",
-		"endtime":	"06:00:00",
+		"starttime": "15:50:00",
+		"endtime":	"16:40:00",
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.2,
 		"waitingforothers": "Let's wait until more people are here",
@@ -14,14 +14,14 @@
 		"atmosphere": "sounds/atmo.mp3"
 	},
 	"couplesmeet": {
-		"starttime": "05:00:00",
-		"endtime": "06:00:00"
+		"starttime": "16:10:00",
+		"endtime": "16:50:00"
 	},
 	"assembly": {
-		"eachdaystarttime": "21:00:00",
-		"eachdayendtime": "22:00:00",
-		"finaldaystarttime": "21:00:00",
-		"finaldayendtime": "22:00:00"
+		"eachdaystarttime": "16:20:00",
+		"eachdayendtime": "18:10:00",
+		"finaldaystarttime": "16:35:00",
+		"finaldayendtime": "19:10:00"
 	},
 	"datatocollect": [
 
