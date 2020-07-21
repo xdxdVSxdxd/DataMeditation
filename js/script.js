@@ -930,9 +930,24 @@ function viz(){
 	   for(var i=0; i<dataforritual.theData.myData.length; i++){
 	   	//console.log(dataforritual.theData.myData[i]);
 	
-		var theDate = luxon.DateTime.fromFormat("yyyy-MM-dd HH:mm:ss",dataforritual.theData.myData[i].timestamp);//Date.parse("01/01/2011 " + dataforritual.theData.myData[i].hour  + ":" + dataforritual.theData.myData[i].minute + ":" + dataforritual.theData.myData[i].second);	   	
+		// 2020-07-20 15:56:20
+		// console.log(dataforritual.theData.myData[i].timestamp);
+		var theDate = luxon.DateTime.fromFormat(dataforritual.theData.myData[i].timestamp ,  "yyyy-MM-dd HH:mm:ss");//Date.parse("01/01/2011 " + dataforritual.theData.myData[i].hour  + ":" + dataforritual.theData.myData[i].minute + ":" + dataforritual.theData.myData[i].second);	   	
+		// console.log(theDate.toString());
 
 	   	//if(phdate<=thedate && hdate>=thedate){
+
+	   	/*
+	   	console.log("st:");
+	   	console.log( st.toString() );
+
+	   	console.log("theDate:");
+	   	console.log( theDate.toString() );
+
+	   	console.log("et:");
+	   	console.log( et.toString() );
+		*/
+
 	   	if( st.diff(theDate).valueOf()<0 && et.diff(theDate).valueOf()>0  ){
 
 
