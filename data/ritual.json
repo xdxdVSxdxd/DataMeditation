@@ -5,7 +5,7 @@
 	"referencetimezone": "UTC",
 	"ritual": {
 		"starttime": "15:50:00",
-		"endtime":	"16:40:00",
+		"endtime":	"17:40:00",
 		"minutestoconsideronline": 1,
 		"atleastthispartofgrouptostartritual": 0.7,
 		"waitingforothers": "Let's wait until more people are here",
