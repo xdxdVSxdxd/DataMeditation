@@ -1018,7 +1018,7 @@ function viz(){
 	   	//console.log(dataforritual.theData.myData[i]);
 	
 		//var thedate = Date.parse("01/01/2011 " + dataforritual.theData.theOthersData[i].hour  + ":" + dataforritual.theData.theOthersData[i].minute + ":" + dataforritual.theData.theOthersData[i].second);	   	
-		var theDate = luxon.DateTime.fromFormat("yyyy-MM-dd HH:mm:ss",dataforritual.theData.theOthersData[i].timestamp);
+		var theDate = luxon.DateTime.fromFormat(dataforritual.theData.theOthersData[i].timestamp , "yyyy-MM-dd HH:mm:ss");
 
 	   	if( st.diff(theDate).valueOf()<0 && et.diff(theDate).valueOf()>0  ){
 
