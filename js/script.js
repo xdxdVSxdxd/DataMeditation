@@ -440,8 +440,17 @@ function doSendData(){
 		var result = new Object();
 		for(var i = 0; i<ritualdata.datatocollect.length; i++){
 			var name = ritualdata.datatocollect[i].fieldid;
-			var value = $("#datacollectionpanel [name='" + name + "']:checked").val();
-			result[name] = value;
+			if(ritualdata.datatocollect[i].type=="switch"){
+				var value = $("#datacollectionpanel [name='" + name + "']:checked").val();
+				result[name] = value;	
+			} else if(ritualdata.datatocollect[i].type=="select"){
+				var value = $("#datacollectionpanel #" + ritualdata.datatocollect[i].fieldid ).val();
+				result[name] = value;	
+			} else if(ritualdata.datatocollect[i].type=="text"){
+				var value = $("#datacollectionpanel #" + ritualdata.datatocollect[i].fieldid ).val();
+				result[name] = value;	
+			}
+			
 		}
 
 		// console.log(result);
