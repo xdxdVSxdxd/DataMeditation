@@ -448,9 +448,8 @@ function doSendData(){
 				result[name] = value;	
 			} else if(ritualdata.datatocollect[i].type=="text"){
 				var value = $("#datacollectionpanel #" + ritualdata.datatocollect[i].fieldid ).val();
-				result[name] = value;	
+				result[name] = escape(value);	
 			}
-			
 		}
 
 		// console.log(result);
@@ -977,6 +976,9 @@ function viz(){
 	   						var value = jdata[field];
 		   					//console.log(field + "-->" + value);
 
+		   					if(ritualdata.datatocollect[j].type=="text"){
+		   						value = unescape(value);
+		   					}
 		   					
 		   					if(value!="no answer"){
 		   						towrite.push(  field + "-->" + value  );
@@ -1049,6 +1051,9 @@ function viz(){
 	   						var value = jdata[field];
 		   					//console.log(field + "-->" + value);
 
+		   					if(ritualdata.datatocollect[j].type=="text"){
+		   						value = unescape(value);
+		   					}
 		   					
 		   					if(value!="no answer"){
 		   						towrite.push(  field + "-->" + value  );
@@ -1090,32 +1095,44 @@ function viz(){
 
 if(towriteme!=null){
 
-			var fheight = 25;
+			var fheight = 18;
 	   		var margin = 5;
 	   		var starty = height/2 - towriteme.length*(fheight+margin)/2;
 	   		sketch.fill(255,0,0);
 		   	sketch.textSize(fheight);
 			sketch.textAlign(sketch.LEFT,sketch.CENTER);
 			sketch.textFont('Helvetica');
+			var tws = "";
 			for(var k = 0; k<towriteme.length; k++){
-				sketch.text(towriteme[k], margin, starty + k*(fheight+margin)  );	
+				tws = tws + towriteme[k];
+				if(k<(towriteme.length-1)){
+					tws = tws + "\n";
+				}
+				//sketch.text(towriteme[k], margin, starty + k*(fheight+margin)  );	
 			}
+			sketch.text(tws, margin, 30, width/2 - 2*margin , height - 65  );	
 
 }
 
 
 if(towriteother!=null){
 
-			var fheight = 25;
+			var fheight = 18;
 	   		var margin = 5;
 	   		var starty = height/2 - towriteother.length*(fheight+margin)/2;
 	   		sketch.fill(255,0,0);
 		   	sketch.textSize(fheight);
 			sketch.textAlign(sketch.RIGHT,sketch.CENTER);
 			sketch.textFont('Helvetica');
+			var tws = "";
 			for(var k = 0; k<towriteother.length; k++){
-				sketch.text(towriteother[k], width-margin, starty + k*(fheight+margin)  );	
+				tws = tws + towriteother[k];
+				if(k<(towriteother.length-1)){
+					tws = tws + "\n";
+				}
+				//sketch.text(towriteother[k], width-margin, starty + k*(fheight+margin)  );	
 			}
+			sketch.text(tws, width/2 + margin, 30 , width/2 - 2*margin , height - 65  );	
 
 }
 
