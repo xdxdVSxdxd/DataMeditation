@@ -418,6 +418,48 @@ function doRemoveCouples($request,$conn){
 }
 
 
+function saveData($request,$conn){
+	$result = new \stdClass();
+
+
+	$groupid = $request["groupid"];
+
+	$result->couples = array();
+
+	//coppie
+	$q2 = "SELECT iduser1,iduser2 FROM couples WHERE groupid = :groupid ";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid  ] );
+	while( $r1 = $stmt2->fetch() ){
+		$o = = new \stdClass();
+		$o->userid1 = $r1["iduser1"];
+		$o->userid2 = $r1["iduser2"];
+		$result->couples[] = $o;
+
+	}
+	$stmt2->closeCursor();
+
+
+	$q2 = "SELECT jsonstring,timestamp,userid,hour,minute,second FROM jsondata WHERE groupid = :groupid ORDER BY `timestamp` ASC";
+	$stmt2 = $conn->prepare($q2);
+	$stmt2->execute([':groupid' => $groupid ] );
+	$result->theData = array();
+	while( $r1 = $stmt2->fetch() ){
+		$o = new \stdClass();
+		$o->jsonstring = $r1["jsonstring"];
+		$o->userid = $r1["userid"];
+		$o->hour = $r1["hour"];
+		$o->timestamp = $r1["timestamp"];
+		$o->minute = $r1["minute"];
+		$o->second = $r1["second"];
+		$result->theData[] = $o;
+	}
+	$stmt2->closeCursor();
+
+	return $result;	
+}
+
+
 $cmd = $_REQUEST["cmd"];
 
 $result = new \stdClass();
@@ -444,6 +486,8 @@ if($cmd=="login"){
 	$result = doCreateCouples($_REQUEST,$conn);
 } else if($cmd=="removecouples"){
 	$result = doRemoveCouples($_REQUEST,$conn);
+} else if($cmd=="savedata"){
+	$result = saveData($_REQUEST,$conn);
 } else {
 	$result->err = "Error. Command not understood.";
 }
