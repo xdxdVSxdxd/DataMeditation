@@ -431,7 +431,7 @@ function saveData($request,$conn){
 	$stmt2 = $conn->prepare($q2);
 	$stmt2->execute([':groupid' => $groupid  ] );
 	while( $r1 = $stmt2->fetch() ){
-		$o = = new \stdClass();
+		$o = new \stdClass();
 		$o->userid1 = $r1["iduser1"];
 		$o->userid2 = $r1["iduser2"];
 		$result->couples[] = $o;
