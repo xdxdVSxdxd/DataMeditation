@@ -1,4 +1,7 @@
+// where is your API? configure for your server
 var APIBaseUrl = "https://he-r.it/DataMeditation/API/index.php";
+
+// what is the group ID on yout database for which you want to generare the visualization?
 var groupid = 4;
 
 var theData = null;
@@ -71,6 +74,14 @@ var totalheight = 0;
 var mindate = null;
 var maxdate = null;
 
+
+
+
+// ********************
+// configure here the dimensions of the visualization
+// with this configuration it comes out quite large
+// you would need a large plotter and 2 meters of paper
+// ********************
 var margin = 150;
 var labeldatesize = 450;
 var axissize = 150;
@@ -175,7 +186,7 @@ function prepareLegend(){
 	});
 
 	// to generate only the legend, uncomment below
-	d3.select("#vizholder svg").style("display","none"); 
+	//d3.select("#vizholder svg").style("display","none"); 
 
 }
 
