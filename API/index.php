@@ -271,8 +271,10 @@ function doGetMyCoupleDataForRitual($request,$conn){
 	$userid = $request["userid"];
 	$groupid = $request["groupid"];
 
-	$todaysdate = strtotime("today");
-	$yesterdaysdate = strtotime("yesterday");
+	//$todaysdate = strtotime("today");
+	//$yesterdaysdate = strtotime("yesterday");
+	$todaysdate = strtotime("2020/07/24");
+	$yesterdaysdate = strtotime("2020/07/23");
 
 	$y1 = date("Y", $yesterdaysdate);
 	$m1 = date("m", $yesterdaysdate);
