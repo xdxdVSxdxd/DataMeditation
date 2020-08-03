@@ -889,10 +889,10 @@ function viz(){
 	    sketch.noStroke();
 	    sketch.rect(0,0,width,height);
 
-	    //startdatetime = luxon.DateTime.fromISO(ritualdata.ritual.starttime).minus({day: 1});
-	    //enddatetime = luxon.DateTime.fromISO(ritualdata.ritual.starttime);
-	    startdatetime = luxon.DateTime.fromISO("2020-07-23T00:00:00");
-	    enddatetime = luxon.DateTime.fromISO("2020-07-24T0:00:00");
+	    startdatetime = luxon.DateTime.fromISO(ritualdata.ritual.starttime).minus({day: 1});
+	    enddatetime = luxon.DateTime.fromISO(ritualdata.ritual.starttime);
+	    // startdatetime = luxon.DateTime.fromISO("2020-07-23T00:00:00");
+	    // enddatetime = luxon.DateTime.fromISO("2020-07-24T0:00:00");
 	    
 	    st = startdatetime;
 		

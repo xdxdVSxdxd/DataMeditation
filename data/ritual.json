@@ -4,10 +4,10 @@
 	"finalday": "2020-07-24",
 	"referencetimezone": "UTC",
 	"ritual": {
-		"starttime": "00:00:00",
-		"endtime":	"24:00:00",
+		"starttime": "16:20:00",
+		"endtime":	"17:20:00",
 		"minutestoconsideronline": 1,
-		"atleastthispartofgrouptostartritual": 0.1,
+		"atleastthispartofgrouptostartritual": 0.7,
 		"waitingforothers": "Let's wait until more people are here",
 		"minutebass": "sounds/smallbass.mp3",
 		"hourbass": "sounds/bigbass.mp3",
