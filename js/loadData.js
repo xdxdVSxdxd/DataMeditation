@@ -85,11 +85,11 @@ var maxdate = null;
 var margin = 150;
 var labeldatesize = 450;
 var axissize = 150;
-var labelfieldsize = 600;
-var labeltextsize = 1200;
+var labelfieldsize = 800;
+var labeltextsize = 4500;
 
 var numberofhours = 0;
-var rowheight = 150;
+var rowheight = 200;
 
 
 
@@ -327,9 +327,8 @@ function drawVViz(){
 				.attr("y" , datatowrite[d].y);
 				//.text(  datatowrite[d].txt  );
 			var text = new text_object(text_rep , "notecontent" + texttobewrappedid);
-			
 			text.setContent(datatowrite[d].txt);
-			text.resetText(datatowrite[d].txt);
+			text.resetText(33);
 			text.wrap(labeltextsize);
 
 			texttobewrappedid++;
@@ -356,7 +355,7 @@ for wrapping
 
 function text_object(text_rep,id){
 	//initial variables
-	this.str_ = '', this.font_size = 20, this.text_object = text_rep, this.scale_=null, this.dy = '.88em';
+	this.str_ = '', this.font_size = 33, this.text_object = text_rep, this.scale_=null, this.dy = '.88em';
 	this.id = id;
 	var text_height=0, text_width =0, lines = 1;
 
@@ -393,6 +392,7 @@ function text_object(text_rep,id){
 		//for each letter in the array
 		for(var i =0; i<raw_text.length; i++){
 			//dummy svg-text element, to...
+			//console.log("fs:" + this.font_size);
 			var letter = svg_.append('text').attr('font-size',this.font_size+'pt').attr('id','dummy_text').text(this.str_[i]);
 			//...get the size of each letter-representation
 			total_=total_ + document.getElementById("dummy_text").getBBox().width;	//letter.node().clientWidth;
